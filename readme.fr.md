@@ -1,36 +1,37 @@
-#Project NURL
+# cleancode-webget-tool
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rhwy/cleancode-webget-tool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##Spécifications
+## Projet NGET - Spécifications
 
-Nurl est un utilitaire en ligne de commande qui permet de voir, télécharger ou afficher des informations à partir d'une url.
-L'executable sera nommé `nurl.exe`. Il pourra être lancé avec une seule commande à la fois et plusieurs options (comme décrit dans les exemples ci-dessous).
+NGET est un utilitaire en ligne de commande qui permet de voir, télécharger ou afficher des informations à partir d'une url.
+L'executable sera nommé `nget.exe`. Il pourra être lancé avec une seule commande à la fois et plusieurs options (comme décrit dans les exemples ci-dessous).
 
 
 Voici l'ensemble des options disponibles dans l'application:
 
 1. Affiche dans la console le contenu du fichier sité à l'url `abc`:
 
-	nurl.exe get -url "http://abc" 
+	nget.exe get -url "http://abc" 
 
 
 2. Sauvegarde le contenu de l'url `http://abc` dans le fichier `c:\abc.json`:
 
-	nurl.exe get -url "http://abc" -save "c:\abc.json"
+	nget.exe get -url "http://abc" -save "c:\abc.json"
 
 
 3. Teste le temps de chargement du ficher à l'url `http://abc` 5 fois et affiche les 5 temps
 
-	nurl.exe test -url "http://abc" -times 5 
+	nget.exe test -url "http://abc" -times 5 
 
 4. Teste le temps de chargement du fichier à l'url `http://abc` et affiche la moyenne du temps de chargement
 
-	nurl.exe test -url "http://abc" -times 5 -avg
+	nget.exe test -url "http://abc" -times 5 -avg
 
 
 ##Tâches
 
-1. Créez un répertoire `Projects\nurl` dans votre repository projet github.
+1. Créez un répertoire `Projects\nget-v1` dans votre repository projet github.
 
 1. Transcrivez l'exemple complet sous forme de specifications dans un fichier `specs.txt`. Soit par exemple pour les 2 premières options:
 
