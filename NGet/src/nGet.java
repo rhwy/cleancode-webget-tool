@@ -13,7 +13,6 @@ public class nGet
 		String methodArg = args[0];
 		String typeArg = args[1];
 		String urlArg = args[2];
-		String functionArg = args[3]; 
 		
 		if (methodArg.equals("get"))
 		{
@@ -41,6 +40,8 @@ public class nGet
 				}
 				else if(sizeArgs == 5)
 				{
+					String functionArg = args[3]; 
+					
 					if(functionArg.equals("-save"))
 					{
 						if(urlArg.indexOf("http://") != -1)
@@ -83,6 +84,8 @@ public class nGet
 			{
 				if(sizeArgs == 5)
 				{
+					String functionArg = args[3]; 
+					
 					if(functionArg.equals("-times"))
 					{
 						int cptTimes = Integer.parseInt(args[4]);
@@ -111,6 +114,8 @@ public class nGet
 				}
 				else if(sizeArgs == 6)
 				{
+					String functionArg = args[3]; 
+					
 					if(functionArg.equals("-times"))
 					{
 						String complementArg = args[5];
