@@ -11,12 +11,25 @@ namespace ngetv1
 			if (args[0] == null || args[1] == null  || args[2] == null) {
 				throw new Exception ();
 			}
-				
+
+			if (args.Length != 3 && args.Length != 5) {
+				throw new Exception ();
+			}
+
 			String method = args [0];
 			String comp = args [1];
 			String url = args [2];
+			String ngetOption = null;
+			String other = null;
 
-			if (method == "get" && comp == "-url") {
+			if (args.Length == 5) {
+				ngetOption = args [3];
+				other = args [4];
+			}
+			if (method == "get" && comp == "-url" && ngetOption != null) {
+				
+			}
+			else if (method == "get" && comp == "-url") {
 				
 				HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create (url);
 				myRequest.Method = "GET";
