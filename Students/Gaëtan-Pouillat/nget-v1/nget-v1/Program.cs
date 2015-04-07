@@ -31,15 +31,24 @@ namespace nget_v1
 					
 					if(args.Length >= 5 && args[3] == "-save"){
 						
-						StreamWriter sw = new StreamWriter(args[4]);
- 
-						sw.Write(getContentByUrl(args[2]));
-						sw.Close();
+						try{
+							
+							StreamWriter sw = new StreamWriter(args[4]);
+ 						
+							sw.Write(getContentByUrl(args[2]));
+							sw.Close();
+							
+						}catch(Exception ex){
+							Console.WriteLine(ex);
+						}
+						
 						
 					}else{
-						
-						Console.WriteLine(getContentByUrl(args[2]));
-						
+						try{
+							Console.WriteLine(getContentByUrl(args[2]));
+						}catch(Exception ex){
+							Console.WriteLine(ex);
+						}
 					}
 				}
 				else{
@@ -61,7 +70,14 @@ namespace nget_v1
 								for(int i=0;i<fois;i++){
 									
 									long milliseconds1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-									getContentByUrl(args[2]);
+									
+									try{
+										getContentByUrl(args[2]);
+									}
+									catch(Exception ex){
+										Console.WriteLine(ex);
+									}
+									
 									long milliseconds2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 									resultat += milliseconds2 - milliseconds1;
 									
@@ -80,7 +96,14 @@ namespace nget_v1
 							for(int i=0;i<fois;i++){
 								
 								long milliseconds1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-								getContentByUrl(args[2]);
+								
+								try{
+									getContentByUrl(args[2]);
+								}
+								catch(Exception ex){
+									Console.WriteLine(ex);
+								}
+								
 								long milliseconds2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 								long resultat = milliseconds2 - milliseconds1;
 								
