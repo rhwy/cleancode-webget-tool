@@ -8,6 +8,7 @@
  */
 using System;
 using System.IO;
+using System.Net;
 
 namespace Clean
 {
@@ -28,16 +29,13 @@ namespace Clean
         	{
         		WebClient client = new WebClient (); 
 				{
-        			client.DownloadFile(args[2]);
+        			client.DownloadString(args[2]);
         			string code = client.DownloadString(args[4]);
         			StreamWriter w = new StreamWriter (args[4]) ;
         			w.WriteLine(code);
-        			w.Close ;
+        			w.Close();
 			    }
-        	if(args[4] = " -time")
-        		{
-        			
-        		}
+        	
         	}
         	
         	
@@ -48,4 +46,5 @@ namespace Clean
 			Console.ReadKey(true);
 		}
 	}
+}
 }
