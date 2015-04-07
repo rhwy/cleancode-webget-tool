@@ -23,7 +23,7 @@
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <StartAction>Project</StartAction>
-    <StartArguments>test -url "http://api.openweathermap.org/data/2.5/weather?q=paris&amp;units=metric" -times 5</StartArguments>
+    <StartArguments>test -url "http://api.openweathermap.org/data/2.5/weather?q=paris&amp;units=metric" -times 5 -avg</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>

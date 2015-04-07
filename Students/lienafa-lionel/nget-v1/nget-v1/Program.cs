@@ -39,18 +39,23 @@ namespace nget_v1
 						client.DownloadString(url);
 						TimeSpan TimeDif = DateTime.Now.Subtract(TimeStart);
 						timesArray[i] = TimeDif.TotalSeconds;
-						cumul += TimeDif.TotalSeconds;
-						if(args.Length < 5) {
-							if(args[5] != "-avg") {
-								Console.WriteLine(TimeDif.TotalSeconds);
-							}
-						}
+						
+						try {
+								if(args[5] == "-avg") {
+									cumul += TimeDif.TotalSeconds;
+								}
+						} catch (IndexOutOfRangeException e) {
+							Console.WriteLine(TimeDif.TotalSeconds);
+							
+   						}
 					}
 					
-					if(args.Length < 5) {
+					try {
 						if(args[5] == "-avg") {
 							Console.WriteLine(cumul / nbTimes);
 						}
+					} catch (IndexOutOfRangeException e) {
+						
 					}
 					break;
 				default:
