@@ -19,23 +19,23 @@ namespace Clean
         	if(args.Length == 0 ){
         		Console.WriteLine(" Enter arguments ");}
 			
-			else if(args[0] == "get" && args [1] ==" -url")
+			else if(args[0] == "get") 
         	{
-        		Console.WriteLine(args[2]);
-        		
-        		if(args[3] == "-save"){	
-        		WebClient client = new WebClient (); 
-        		string code = client.DownloadString(args[2]);
-        		StreamWriter w = new StreamWriter (args[4]) ;
-        		w.WriteLine(code);
-        		w.Close();
-        	 }
-        	   }
-			if(args[5] == "-time")
-			{
-				
-			}
-			  
-		 }
+				if(args.Length  >=2 && args [1] ==" -url"){
+					if(args.Length >= 5 && args[3] ==  "-save"){
+						try{
+						WebClient client = new WebClient (); 
+        				string code = client.DownloadString(args[2]);
+        				StreamWriter w = new StreamWriter (args[4]) ;
+        				w.WriteLine(code);
+        				w.Close();
+					}
+						catch(Exception exception){
+							Console.WriteLine(exception);}
+							
+				}
+			 } 
+	    }
 	}
+}
 }
