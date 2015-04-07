@@ -16,35 +16,29 @@ namespace Clean
 	{
 		public static void Main(string[] args)
 		{
-			
-        for (int i = 0; i < args.Length; i++)
-        {
         	if(args.Length == 0 ){
-        		Console.WriteLine(" Enter arguments ");} // if any agrument
-        	if(args[0] == "get" && args [1] =="-url")
+        		Console.WriteLine(" Enter arguments ");}
+			
+			else if(args[0] == "get" && args [1] ==" -url")
         	{
         		Console.WriteLine(args[2]);
-        	}
-        	if(args[3] ==  "save")
+        		
+        		 if(args[3] == "-save")
         	{
         		WebClient client = new WebClient (); 
 				{
-        			client.DownloadString(args[2]);
-        			string code = client.DownloadString(args[4]);
+        			string code = client.DownloadString(args[2]);
         			StreamWriter w = new StreamWriter (args[4]) ;
         			w.WriteLine(code);
         			w.Close();
-			    }
-        	
-        	}
-        	
-        	
-			
-			// TODO: Implement Functionality Here
-			
-			Console.Write("Press any key to continue . . . ");
-			Console.ReadKey(true);
-		}
+			     }
+        	 }
+        	   }
+			if(args[5] == "-time")
+			{
+				
+			}
+			  
+		 }
 	}
-}
 }
