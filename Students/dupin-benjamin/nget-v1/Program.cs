@@ -9,6 +9,7 @@ namespace ngetv1
 		public static void Main (string[] args)
 		{
 			try {
+				// Tester le tableau d'arguments
 				if (args == null || args.Length == 0) {
 					throw new Exception (getUsage ());
 				}
@@ -26,6 +27,7 @@ namespace ngetv1
 				default:
 					throw new Exception (getStringUnknownParameter (args [0]));
 				}
+
 			} catch (Exception e) {
 				Console.WriteLine ("ERROR");
 				Console.WriteLine (e);
@@ -39,7 +41,7 @@ namespace ngetv1
 		/// <returns>The usage.</returns>
 		private static string getUsage ()
 		{
-			return "TODO Print usage...";
+			return "Print usage...";
 		}
 
 		/// <summary>
@@ -64,6 +66,8 @@ namespace ngetv1
 			Boolean isAvg = false;
 
 			int length = args.Length;
+
+			// Récupèration des arguments
 			for (int i = 0; i <= length - 1; i++) {
 
 				if (args [i] == null || String.IsNullOrEmpty (args [i])) {
@@ -83,6 +87,7 @@ namespace ngetv1
 
 			TimeSpan totalDuration = new TimeSpan ();
 			for (int i = 0; i <= time; i++) {
+				
 				DateTime before = DateTime.Now;
 				(new WebClient ()).DownloadString (sourceUrl);
 				DateTime after = DateTime.Now;
