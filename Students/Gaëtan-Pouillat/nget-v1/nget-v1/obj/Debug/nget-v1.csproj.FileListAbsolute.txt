@@ -1,0 +1,6 @@
+D:\logiciels\projets c#\Students\Pouillat-Gaetan\nget-v1\Students\Gaëtan-Pouillat\nget-v1\nget-v1\obj\Debug\nget-v1.csprojResolveAssemblyReference.cache
+D:\logiciels\projets c#\Students\Pouillat-Gaetan\nget-v1\Students\Gaëtan-Pouillat\nget-v1\nget-v1\bin\Debug\nget-v1.exe.config
+D:\logiciels\projets c#\Students\Pouillat-Gaetan\nget-v1\Students\Gaëtan-Pouillat\nget-v1\nget-v1\bin\Debug\nget-v1.exe
+D:\logiciels\projets c#\Students\Pouillat-Gaetan\nget-v1\Students\Gaëtan-Pouillat\nget-v1\nget-v1\bin\Debug\nget-v1.pdb
+D:\logiciels\projets c#\Students\Pouillat-Gaetan\nget-v1\Students\Gaëtan-Pouillat\nget-v1\nget-v1\obj\Debug\nget-v1.exe
+D:\logiciels\projets c#\Students\Pouillat-Gaetan\nget-v1\Students\Gaëtan-Pouillat\nget-v1\nget-v1\obj\Debug\nget-v1.pdb
