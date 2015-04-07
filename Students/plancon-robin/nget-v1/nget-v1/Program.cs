@@ -8,16 +8,29 @@ namespace ngetv1
 	{
 		public static void Main (string[] args)
 		{
-			String Method = args [0];
-			String Url = args [1];
+			if (args[0] == null || args[1] == null  || args[2] == null) {
+				throw new Exception ();
+			}
+
+			String method = args [0];
+			String comp = args [1];
+			String url = args [2];
+
+			if (args [3] != null) {
+				String option = args [3];
+			}
 
 			Console.WriteLine (Method);
 			Console.WriteLine (Url);
 
-			if (Method == "get") {
-				HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create (Url);
+			if (Method == "get" && comp == "-url") {
+				
+				HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create (url);
 				myRequest.Method = "GET";
 				WebResponse myResponse = myRequest.GetResponse ();
+				if (myResponse == null) {
+					throw new Exception ();
+				}
 				StreamReader sr = new StreamReader (myResponse.GetResponseStream (), System.Text.Encoding.UTF8);
 				string result = sr.ReadToEnd ();
 				sr.Close ();

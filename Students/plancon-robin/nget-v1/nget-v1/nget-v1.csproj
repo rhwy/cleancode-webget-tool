@@ -6,7 +6,7 @@
     <ProjectGuid>{14FBC120-B96F-448E-B56D-B53DAB0E58CD}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ngetv1</RootNamespace>
-    <AssemblyName>nget-v1.app</AssemblyName>
+    <AssemblyName>nget-v1</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -21,7 +21,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeExecute" command="get " />
+        <Command type="Execute" command="get test" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
