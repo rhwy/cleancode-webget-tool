@@ -59,6 +59,7 @@ namespace nget_v1
 					}
 					break;
 				default:
+					Console.WriteLine("Argument non valide");
 					break;
 			}
 			Console.ReadKey(true);
