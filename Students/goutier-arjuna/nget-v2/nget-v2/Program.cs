@@ -1,46 +1,88 @@
 using System;
+using System.Timers;
+using System.Net;
+using System.IO;
+using System.Diagnostics;
 
 namespace ngetv2
 {
 	class MainClass
 	{
-		public static void Main (string[] args)
-		{
-			switch (args [0]) {
+		private readonly static int CommandIndex = 1;
+
+		public static void Main (string[] args) {
+			switch (args [CommandIndex]) {
 			case "get":
-				if (Array.IndexOf(args,"-save") != -1) {
-					Get (args [1], Array.IndexOf (args, "-save") + 1);
-					return;
-				}
-				Get (args [2]);
+				Get (args);
 				break;
 			case "test":
-				Test(args[Array.IndexOf(args,"-times") + 1], args[Array.IndexOf(args,"-avg") != -1]);
+				Test (args);
 				break;
 			}
 		}
 
-		public static void Get(string Url, string ToPath = "")
-		{
-			Console.WriteLine (Url);
-			Console.WriteLine (ToPath);
+		private static void Get(string[] args) {
+			string url = GetArgument(args,"url");
+
+			if (ContainsArguement(args,"save")) {
+				SaveResult (url, GetArgument(args,"save"));
+				return;
+			}
+			DisplayResult (url);
 		}
 
-		public static void Get(string Url)
-		{
-			Console.WriteLine (Url);
-			//Console.WriteLine (GetContent (Url));
+		private static void Test(string[] args) {
+			int times = int.Parse(GetArgument(args,"times"));
+			string url = GetArgument(args,"url");
+
+			if (ContainsArguement (args, "avg"))
+				DisplayAverage (url, times);
+           	else
+			   DisplayTime(url,times);
 		}
 
-		public static String GetContent(string Url)
-		{
-			return "";
+
+		private static string GetArgument(string[] args, string argName) {
+			return args [Array.IndexOf (args, "-" + argName) + 1];
 		}
 
-		public static void Test(int Times, bool isAverage = false)
-		{
-			Console.WriteLine (Times);
-			Console.WriteLine (isAverage);
+		private static bool ContainsArguement(string[] args, string argName) {
+			return Array.IndexOf(args,"-" + argName) != -1;
+		}
+
+		private static void SaveResult(string RequestedPath, string ToPath) {
+			File.WriteAllText (ToPath, GetContent (RequestedPath));
+		}
+
+		private static void DisplayResult(string Url) {
+			Console.WriteLine (GetContent(Url));
+		}
+
+		private static String GetContent(string RequestedUrl) {
+			using (var client = new WebClient()) {
+				return client.DownloadString(RequestedUrl);
+			}
+		}
+
+		private static void DisplayAverage(string RequestedUrl, int Times) {
+			long sum = 0;
+			for (int i = 0; i<Times; ++i) {
+				sum  += GetRequestTime (RequestedUrl);
+			}
+			Console.WriteLine (sum / Times);
+		}
+
+		private static void DisplayTime(string RequestedUrl, int Times) {
+			for (int i = 0; i<Times; ++i)
+				Console.WriteLine(GetRequestTime (RequestedUrl));
+		}
+
+
+		private static long GetRequestTime(string RequestedUrl) {
+			var watch = new Stopwatch ();
+			watch.Start ();
+			GetContent (RequestedUrl);
+			return watch.ElapsedMilliseconds;
 		}
 	}
 }
