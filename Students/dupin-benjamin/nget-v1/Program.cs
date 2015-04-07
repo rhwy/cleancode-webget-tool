@@ -18,18 +18,25 @@ namespace ngetv1
 				case "get":
 					getFunction (args);
 					break;
+
 				case "test":
-				//TODO TEST
+					testFunction (args);
 					break;
+
 				default:
 					throw new Exception (getStringUnknownParameter (args [0]));
 				}
 			} catch (Exception e) {
 				Console.WriteLine ("ERROR");
 				Console.WriteLine (e);
+				Console.WriteLine (getUsage ());
 			}
 		}
 
+		/// <summary>
+		/// Return usage
+		/// </summary>
+		/// <returns>The usage.</returns>
 		private static string getUsage ()
 		{
 			return "TODO Print usage...";
@@ -43,6 +50,54 @@ namespace ngetv1
 		private static string getStringUnknownParameter (string par)
 		{
 			return "ERROR : Unknown parameter " + par;
+		}
+
+		/// <summary>
+		/// Test function 
+		/// </summary>
+		/// <param name="args">Arguments.</param>
+		private static void testFunction (string[] args)
+		{
+
+			string sourceUrl = "";
+			int time = 0;
+			Boolean isAvg = false;
+
+			int length = args.Length;
+			for (int i = 0; i <= length - 1; i++) {
+
+				if (args [i] == null || String.IsNullOrEmpty (args [i])) {
+					throw new Exception (getUsage ());
+				}
+
+				if (args [i] == "-url") {
+					checkArrayLength (i, length);
+					sourceUrl = args [i + 1];
+				} else if (args [i] == "-times") {
+					checkArrayLength (i, length);
+					time = Int32.Parse (args [i + 1]);
+				} else if (args [i] == "-avg") {
+					isAvg = true;
+				}
+			}
+
+			TimeSpan totalDuration = new TimeSpan ();
+			for (int i = 0; i <= time; i++) {
+				DateTime before = DateTime.Now;
+				(new WebClient ()).DownloadString (sourceUrl);
+				DateTime after = DateTime.Now;
+
+				if (!isAvg) {
+					Console.WriteLine ("Duration (ms) : " + after.Subtract (before).TotalMilliseconds);
+				} else {
+					totalDuration += (after - before);
+				}
+			}
+
+			if (isAvg) {
+				Console.WriteLine ("Total duration average (ms) : " + totalDuration.TotalMilliseconds / time);
+			}
+
 		}
 
 		/// <summary>
@@ -62,8 +117,7 @@ namespace ngetv1
 				if (args [i] == null || String.IsNullOrEmpty (args [i])) {
 					throw new Exception (getUsage ());
 				}
-
-
+					
 				if (args [i] == "-url") {
 					checkArrayLength (i, length);
 					sourceUrl = args [i + 1];
@@ -82,11 +136,12 @@ namespace ngetv1
 			Console.WriteLine ("Printing content of " + sourceUrl);
 			Console.WriteLine ("");
 			Console.WriteLine (page);
+			Console.WriteLine ("");
 
 			// Si l'URL de destination est renseignée
 			if (destUrl != null && !String.IsNullOrEmpty (destUrl)) {
 
-				Console.WriteLine ("Save to " + sourceUrl);
+				Console.WriteLine ("Saving to " + sourceUrl);
 
 				TextWriter tw = new StreamWriter (destUrl, true);
 				tw.WriteLine (page);
