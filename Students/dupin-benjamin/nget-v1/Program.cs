@@ -8,25 +8,30 @@ namespace ngetv1
 	{
 		public static void Main (string[] args)
 		{
-			if (args == null || args.Length == 0) {
-				throw new Exception (getUsage());
-			}
+			try {
+				if (args == null || args.Length == 0) {
+					throw new Exception (getUsage ());
+				}
 
-			switch (args[0]) {
+				switch (args [0]) {
 
-			case "get":
-				getFunction (args);
-				break;
-			case "test":
+				case "get":
+					getFunction (args);
+					break;
+				case "test":
 				//TODO TEST
-				break;
-			default:
-				throw new Exception (getStringUnknownParameter(args[0]));
+					break;
+				default:
+					throw new Exception (getStringUnknownParameter (args [0]));
+				}
+			} catch (Exception e) {
+				Console.WriteLine ("ERROR");
+				Console.WriteLine (e);
 			}
-
 		}
 
-		private static string getUsage() {
+		private static string getUsage ()
+		{
 			return "TODO Print usage...";
 		}
 
@@ -35,7 +40,8 @@ namespace ngetv1
 		/// </summary>
 		/// <returns>The string unknown parameter.</returns>
 		/// <param name="par">Par.</param>
-		private static string getStringUnknownParameter(string par) {
+		private static string getStringUnknownParameter (string par)
+		{
 			return "ERROR : Unknown parameter " + par;
 		}
 
@@ -43,17 +49,18 @@ namespace ngetv1
 		/// Faire le get
 		/// </summary>
 		/// <param name="parameters">Parameters.</param>
-		private static void getFunction(string[] args) {
+		private static void getFunction (string[] args)
+		{
 
-			string sourceUrl ="";
-			string destUrl ="";
+			string sourceUrl = "";
+			string destUrl = "";
 
 			// Gestion des paramètres
 			int length = args.Length;
-			for (int i = 0 ; i<=length-1 ; i++) {
+			for (int i = 0; i <= length - 1; i++) {
 
-				if (args[i] == null || String.IsNullOrEmpty (args[i])) {
-					throw new Exception (getUsage());
+				if (args [i] == null || String.IsNullOrEmpty (args [i])) {
+					throw new Exception (getUsage ());
 				}
 
 
@@ -67,7 +74,7 @@ namespace ngetv1
 			}
 
 			if (sourceUrl == null || String.IsNullOrEmpty (sourceUrl)) {
-				throw new Exception (getStringUnknownParameter(sourceUrl));
+				throw new Exception (getStringUnknownParameter (sourceUrl));
 			}
 
 			var page = (new WebClient ()).DownloadString (sourceUrl);
@@ -81,8 +88,7 @@ namespace ngetv1
 
 				Console.WriteLine ("Save to " + sourceUrl);
 
-				File.Create (sourceUrl);
-				TextWriter tw = new StreamWriter (sourceUrl);
+				TextWriter tw = new StreamWriter (destUrl, true);
 				tw.WriteLine (page);
 				tw.Close ();
 
@@ -90,9 +96,15 @@ namespace ngetv1
 
 		}
 
-		private static void checkArrayLength(int index, int length) {
+		/// <summary>
+		/// Vérifier si index + 1 <= length +1
+		/// </summary>
+		/// <param name="index">Index.</param>
+		/// <param name="length">Length.</param>
+		private static void checkArrayLength (int index, int length)
+		{
 			if (index + 1 > length - 1) {
-				throw new Exception (getUsage());
+				throw new Exception (getUsage ());
 			}
 		}
 	}
