@@ -1,0 +1,97 @@
+package fr.esgi.cleanc;
+
+import java.io.DataInputStream;
+import java.io.InputStream;
+import java.net.URL;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.out.println("Aucun argument!");
+			return;
+		}
+		
+		switch (args[0]) {
+		case "get":
+			if (args.length == 3 || args.length == 5) {
+				getArgument(args);
+			} else {
+				System.out.println("Nombre d'arguments incorrect!");
+			}
+			break;
+
+		case "test":
+			if (args.length == 3 || args.length == 6) {
+				testArgument(args);
+			} else {
+				System.out.println("Nombre d'arguments incorrect!");
+			}
+			break;
+			
+		default:
+			System.out.println("Argument incorrect");
+			break;
+		}
+	}
+	
+	
+	private static void getArgument(String args[]) {
+		switch (args[1]) {
+		case "-url":
+			if (args.length == 5) {
+				if (args[3] != "-save") {
+					System.out.println("Argument incorrect!");
+					return;
+				}
+				writeFile(args[2], args[4]);
+				return;
+			}
+			readFile(args[2]);
+			break;
+
+		default:
+			System.out.println("Arguments incorrect!");
+			break;
+		}
+	}
+	
+	
+	private static void testArgument(String args[]) {
+		
+	}
+	
+	
+	private static void readFile(String arg1) {
+		URL url;
+		try {
+			url = new URL(arg1);
+			InputStream ins = url.openStream();
+			DataInputStream dis = new DataInputStream(ins);
+
+			// Lire le fichier jusqu'à la fin
+			String ligne = dis.readUTF();
+			while (ligne != null)
+			{
+				System.out.println(ligne);
+				ligne = dis.readUTF();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	private static void writeFile(String arg1, String arg2) {
+		
+	}
+	
+	
+	private static long[] loadTime(String arg1, String arg2) {
+		
+		return null;
+	}
+}

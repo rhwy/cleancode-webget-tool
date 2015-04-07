@@ -1,0 +1,45 @@
+package fr.esgi.cleanc;
+
+import com.sun.corba.se.impl.orb.ParserTable.TestAcceptor1;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		if (args.length == 0) {
+			System.out.println("Aucun argument!");
+			return;
+		}
+
+		
+		
+		
+		
+		
+		switch (args[0]) {
+		case "get":
+			if (args.length == 3) {
+				
+			} else if (args.length == 5) {
+				test();
+			} else {
+				System.out.println("Nombre d'arguments incorrect!");
+			}
+			break;
+
+		case "test":
+			
+			break;
+			
+		default:
+			System.out.println("Argument incorrect");
+			break;
+		}
+		
+	}
+	
+	public void test() {
+		
+	}
+}

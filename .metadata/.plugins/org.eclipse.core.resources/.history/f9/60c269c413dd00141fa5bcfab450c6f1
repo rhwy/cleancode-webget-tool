@@ -1,0 +1,31 @@
+package fr.esgi.cleanc;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		if (args.length == 0 ) {
+			System.out.println("Aucun argument en paramètre!");
+			return;
+		} else if (args.length <= 3 ) {
+			System.out.println("Nombre d'arguments incorrect");
+			return;
+		}
+		
+		switch (args[0]) {
+		case "get":
+			
+			break;
+
+		case "test":
+			break;
+			
+		default:
+			
+			break;
+		}
+		
+		System.out.println("test");
+	}	
+}

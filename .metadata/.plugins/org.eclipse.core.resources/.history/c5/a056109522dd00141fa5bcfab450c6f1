@@ -1,0 +1,100 @@
+package fr.esgi.cleanc;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+
+public class Main {
+
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.out.println("Aucun argument!");
+			return;
+		}
+		
+		switch (args[0]) {
+		case "get":
+			if (args.length == 3 || args.length == 5) {
+				getArgument(args);
+			} else {
+				System.out.println("Nombre d'arguments incorrect!");
+			}
+			break;
+
+		case "test":
+			if (args.length == 3 || args.length == 6) {
+				testArgument(args);
+			} else {
+				System.out.println("Nombre d'arguments incorrect!");
+			}
+			break;
+			
+		default:
+			System.out.println("Argument incorrect");
+			break;
+		}
+	}
+	
+	
+	private static void getArgument(String args[]) {
+		switch (args[1]) {
+		case "-url":
+			if (args.length == 5) {
+				if (!args[3].equals("-save")) {
+					System.out.println("Argument incorrect!");
+					return;
+				}
+				readFile(args[2], args[4]);
+				return;
+			}
+			readFile(args[2], null);
+			break;
+
+		default:
+			System.out.println("Arguments incorrect!");
+			break;
+		}
+	}
+	
+	
+	private static void testArgument(String args[]) {
+		
+	}
+	
+	
+	private static void readFile(String arg1, String arg2) {
+		try {
+			URL oracle = new URL(arg1);
+	        BufferedReader in = new BufferedReader(
+	        new InputStreamReader(oracle.openStream()));
+	        String inputLine;
+	        
+	        if (arg2 == null) {
+	        	while ((inputLine = in.readLine()) != null) {
+	    	        System.out.println(inputLine);
+	        	}
+	        } else {
+	        	BufferedWriter out = new BufferedWriter(new FileWriter(arg2));
+	        	while ((inputLine = in.readLine()) != null) {
+	        		out.write(inputLine);
+	        	}
+	        	out.close();
+	        }
+	        
+	        in.close();
+			System.out.println("Fichier généré.");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private static long[] loadTime(String arg1, String arg2) {
+		
+		return null;
+	}
+}
