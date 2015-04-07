@@ -1,56 +1,167 @@
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 public class nGet
 {
-	public static void main(String[] args) throws IOException
+	@SuppressWarnings({ "resource", "unused" })
+	public static void main(String[] args) throws Exception
 	{
-		/*
-			1 - Affiche dans la console le contenu du fichier sité à l'url abc:
-			nget.exe get -url "http://abc"
-			2 - Sauvegarde le contenu de l'url http://abc dans le fichier c:\abc.json:
-			nget.exe get -url "http://abc" -save "c:\abc.json"
-			3 - Teste le temps de chargement du ficher à l'url http://abc 5 fois et affiche les 5 temps
-			nget.exe test -url "http://abc" -times 5
-			4 Teste le temps de chargement du fichier à l'url http://abc et affiche la moyenne du temps de chargement
-			nget.exe test -url "http://abc" -times 5 -avg
-		*/
-
-		// Cas 1 : nget.exe get -url "http://abc"
-		if (args[0].equals("get") && args.length == 3)
+		int sizeArgs = args.length;
+		String methodArg = args[0];
+		String typeArg = args[1];
+		String urlArg = args[2];
+		String functionArg = args[3]; 
+		
+		if (methodArg.equals("get"))
 		{
-			if (args[1].equals("-url"))
+			if (typeArg.equals("-url"))
 			{
-				try (BufferedReader br = new BufferedReader(new FileReader(args[2])))
+				if(sizeArgs == 3)
 				{
-					String ligneCourante;
-	
-					while ((ligneCourante = br.readLine()) != null)
+					if(urlArg.indexOf("http://") != -1)
 					{
-						System.out.println(ligneCourante);
+						URL url = new URL(urlArg);
+				        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+
+				        String inputLine;
+				        while ((inputLine = in.readLine()) != null)
+				        {
+				        	System.out.println(inputLine);
+				        }
+				        in.close();
+					}
+					else
+					{
+						throw new Exception("The URL is invalid !");
+					}
+					
+				}
+				else if(sizeArgs == 5)
+				{
+					if(functionArg.equals("-save"))
+					{
+						if(urlArg.indexOf("http://") != -1)
+						{
+							URL url = new URL(urlArg);
+							String path = args[4];
+							
+							BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+							BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+							String inputLine;
+							
+							while ((inputLine = in.readLine()) != null)
+							{	
+								writer.write(inputLine);
+							}
+						}
+						else
+						{
+							throw new Exception("The URL is invalid !");
+						}
+					}
+					else
+					{
+						throw new Exception("Only '-save' is tolerate with 'get -url' !");
 					}
 				}
-				catch (IOException e)
+				else
 				{
-					e.printStackTrace();
+					throw new Exception("The number of arguments is invalid !");
 				}
 			}
-		}
-		
-		// Cas 2 : nget.exe get -url "http://abc" -save "c:\abc.json"
-		if (args[0].equals("get") && args.length == 5)
-		{
-			if (args[1].equals("-url"))
+			else
 			{
-				File file = new File(args[4]);
-				FileWriter fw = new FileWriter(file);
-				fw.write(args[3]);
+				throw new Exception("Only '-url' is tolerate with 'get' !");
 			}
+		}
+		else if (methodArg.equals("test"))
+		{
+			if (typeArg.equals("-url"))
+			{
+				if(sizeArgs == 5)
+				{
+					if(functionArg.equals("-times"))
+					{
+						int cptTimes = Integer.parseInt(args[4]);
+						double timeBegin = 0;
+						double timeEnd = 0;
+						double timeTotal = 0;
+						
+						URL url = new URL(urlArg);
+						
+						BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+						String inputLine;
+						
+						for(int i=0; i<cptTimes; i++)
+						{
+							timeBegin = System.nanoTime();
+							while ((inputLine = in.readLine()) != null);
+							timeEnd = System.nanoTime();
+							timeTotal = timeEnd - timeBegin;
+							System.out.println((i+1) + "# - time = " + timeTotal);
+						}
+					}
+					else
+					{
+						throw new Exception("Only '-times' is tolerate with 'test -url' !");
+					}
+				}
+				else if(sizeArgs == 6)
+				{
+					if(functionArg.equals("-times"))
+					{
+						String complementArg = args[5];
+						
+						if(complementArg.equals("-avg"))
+						{
+							int cptTimes = Integer.parseInt(args[4]);
+							double timeBegin = 0;
+							double timeEnd = 0;
+							double timeTotal = 0;
+							double cptTimeTotal = 0;
+							
+							URL url = new URL(urlArg);
+							
+							BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+							String inputLine;
+							
+							for(int i=0; i<cptTimes; i++)
+							{
+								timeBegin = System.nanoTime();
+								while ((inputLine = in.readLine()) != null);
+								timeEnd = System.nanoTime();
+								timeTotal = timeEnd - timeBegin;
+								cptTimeTotal += timeTotal;
+							}
+							
+							System.out.println("The average of the time is : " + (cptTimeTotal/cptTimes));
+						}
+						else
+						{
+							throw new Exception("Only '-avg' is tolerate with 'test -url -times' !");
+						}
+					}
+					else
+					{
+						throw new Exception("Only '-times' is tolerate with 'test -url' !");
+					}
+				}
+				else
+				{
+					throw new Exception("The number of arguments is invalid !");
+				}
+			}
+			else
+			{
+				throw new Exception("Only '-url' is tolerate with 'test' !");
+			}
+		}
+		else
+		{
+			throw new Exception("Unknow argument");
 		}
 	}
 }
