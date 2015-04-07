@@ -11,19 +11,12 @@ namespace ngetv1
 			if (args[0] == null || args[1] == null  || args[2] == null) {
 				throw new Exception ();
 			}
-
+				
 			String method = args [0];
 			String comp = args [1];
 			String url = args [2];
 
-			if (args [3] != null) {
-				String option = args [3];
-			}
-
-			Console.WriteLine (Method);
-			Console.WriteLine (Url);
-
-			if (Method == "get" && comp == "-url") {
+			if (method == "get" && comp == "-url") {
 				
 				HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create (url);
 				myRequest.Method = "GET";
