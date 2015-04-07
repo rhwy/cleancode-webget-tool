@@ -9,6 +9,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Diagnostics;
 namespace nget
 {
 	class Program
@@ -70,20 +71,24 @@ namespace nget
 					Console.WriteLine("Test");
 					if(string.IsNullOrEmpty(args[1])|string.IsNullOrEmpty(args[2])|string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
 						throw new Exception("Les paramétre de commande Test Invalide");
-					}else{
+					}else if(args.Length==5){
 						int numEssai=int.Parse(args[4]);
 						int i=0;
 						Console.WriteLine(numEssai);
 						string sURL=args[2];
 						while(i<numEssai){
-							var startTime=DateTime.Now;
+							Stopwatch stopwatch = Stopwatch.StartNew();
 							WebClient client=new WebClient();
 							string value =client.DownloadString(sURL);
-							var EndsTime=DateTime.Now;
+							stopwatch.Stop();
+							
 							i++;
-							Console.WriteLine("{0}:{1}",i,EndsTime-startTime);
+							Console.WriteLine("le chargement N° :{0}:{1} ms",i,stopwatch.Elapsed.TotalMilliseconds);
 						}
+					
 					}
+					
+					
 					
 				}
 				
