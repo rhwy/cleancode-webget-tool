@@ -23,15 +23,12 @@ namespace Clean
         	{
         		Console.WriteLine(args[2]);
         		
-        		 if(args[3] == "-save")
-        	{
+        		if(args[3] == "-save"){	
         		WebClient client = new WebClient (); 
-				{
-        			string code = client.DownloadString(args[2]);
-        			StreamWriter w = new StreamWriter (args[4]) ;
-        			w.WriteLine(code);
-        			w.Close();
-			     }
+        		string code = client.DownloadString(args[2]);
+        		StreamWriter w = new StreamWriter (args[4]) ;
+        		w.WriteLine(code);
+        		w.Close();
         	 }
         	   }
 			if(args[5] == "-time")
