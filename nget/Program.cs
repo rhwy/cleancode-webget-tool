@@ -17,7 +17,7 @@ namespace nget
 		public static void Main(string[] args)
 		{
 			if (args.Length==0){
-				throw new Exception("commande invalide");
+				throw new Exception("requete vide");
 			}
 			else{
 				/**
@@ -29,20 +29,23 @@ namespace nget
 					 tester Si la commande get a de paramétres
 					 */
 					if(string.IsNullOrEmpty(args[1])|string.IsNullOrEmpty(args[2])){
-						throw new Exception("Les paramétre de commande Get Invalide");
+						throw new Exception("Les paramétres de commande Get Invalide");
 						/*
 					 tester Si la commande get a de 2 paramétres
 					 exepmle : get -url "aa"
 						 */
 					}else{
-						if(args.Length==3) {
+						if(args.Length==3 &&args[1].Equals("-url")) {
 							string sURL=args[2];
 							WebClient client=new WebClient();
 							string value =client.DownloadString(sURL);
 							Console.WriteLine(value);
 							
 							Console.ReadLine();
-						}else {
+						}else if(args.Length==3) {
+							Console.WriteLine("les parmamétres de get Erronées");
+							
+						}else{
 							if(string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
 								throw new Exception("Les paramétre de commande Get save Invalide");
 							}else{
@@ -50,20 +53,17 @@ namespace nget
 								string sURL=args[2];
 								WebClient client=new WebClient();
 								string value =client.DownloadString(sURL);
-								//Console.WriteLine(value);
+								
 								if(!File.Exists(path)){
 									File.AppendAllText(args[4], value);
 									
 								}
+								Console.WriteLine("creation de fichier valide");
 							}
 							
 						}
 						
-						
 					}
-					
-					
-					
 					/*
 					 Tester Si la commande est Test
 					 */
@@ -71,25 +71,30 @@ namespace nget
 					Console.WriteLine("Test");
 					if(string.IsNullOrEmpty(args[1])|string.IsNullOrEmpty(args[2])|string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
 						throw new Exception("Les paramétre de commande Test Invalide");
-					}else if(args.Length==5){
+					}else if(args.Length==5 & args[1].Equals("-url")&args[3].Equals("-times")){
 						int numEssai=int.Parse(args[4]);
 						int i=0;
-						Console.WriteLine(numEssai);
+						
 						string sURL=args[2];
-						while(i<numEssai){
-							Stopwatch stopwatch = Stopwatch.StartNew();
-							WebClient client=new WebClient();
-							string value =client.DownloadString(sURL);
-							stopwatch.Stop();
-							
-							i++;
-							Console.WriteLine("le chargement N° :{0}:{1} ms",i,stopwatch.Elapsed.TotalMilliseconds);
+						if(int.Parse(args[4])>0){
+							while(i<numEssai){
+								Stopwatch stopwatch = Stopwatch.StartNew();
+								WebClient client=new WebClient();
+								string value =client.DownloadString(sURL);
+								stopwatch.Stop();
+								
+								i++;
+								Console.WriteLine("le chargement N° :{0}:{1} ms",i,stopwatch.Elapsed.TotalMilliseconds);
+							}
+						}else{
+							Console.WriteLine("Le nombre doit être positive");
 						}
-					
+						
+						
 					}
 					
-					
-					
+				}else{
+					Console.WriteLine("Commande Invalide");
 				}
 				
 				
