@@ -52,7 +52,7 @@ namespace nget
 								//Console.WriteLine(value);
 								if(!File.Exists(path)){
 									File.AppendAllText(args[4], value);
-																	
+									
 								}
 							}
 							
@@ -77,8 +77,8 @@ namespace nget
 						string sURL=args[2];
 						while(i<numEssai){
 							var startTime=DateTime.Now;
-							WebRequest wrGetURL=WebRequest.Create(sURL);
-							Stream objStream=wrGetURL.GetResponse().GetResponseStream();
+							WebClient client=new WebClient();
+							string value =client.DownloadString(sURL);
 							var EndsTime=DateTime.Now;
 							i++;
 							Console.WriteLine("{0}:{1}",i,EndsTime-startTime);

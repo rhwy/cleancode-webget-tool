@@ -35,7 +35,7 @@
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
     <StartAction>Project</StartAction>
     <StartWorkingDirectory>.\</StartWorkingDirectory>
-    <StartArguments>get -url "http://api.openweathermap.org/data/2.5/weather?q=paris&amp;units=metric" -save "C:\Users\hedhili\Documents\Hedheli\c1.json"</StartArguments>
+    <StartArguments>test -url "http://api.openweathermap.org/data/2.5/weather?q=paris&amp;units=metric" -times 5</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
