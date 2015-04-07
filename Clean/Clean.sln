@@ -1,8 +1,10 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 # SharpDevelop 5.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clean", "Clean\Clean.csproj", "{C3444351-AD96-42F0-A208-43CC316DC419}"
+VisualStudioVersion = 12.0.20827.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nget", "Clean\nget.csproj", "{C3444351-AD96-42F0-A208-43CC316DC419}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

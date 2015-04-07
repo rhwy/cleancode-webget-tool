@@ -14,7 +14,17 @@ namespace Clean
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			
+        for (int i = 0; i < args.Length; i++)
+        {
+        	if(args.Length == 0 ){
+        		Console.WriteLine(" Enter arguments ");} // if any agrument
+        	if(args[0] == "get" && args [1] =="-url")
+        	{
+        		Console.WriteLine(args[2]);
+        	}
+        	
+        	
 			
 			// TODO: Implement Functionality Here
 			
