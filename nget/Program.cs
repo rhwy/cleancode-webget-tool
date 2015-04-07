@@ -50,8 +50,11 @@ namespace nget
 								WebClient client=new WebClient();
 								string value =client.DownloadString(sURL);
 								//Console.WriteLine(value);
-								
-								
+								if(!File.Exists(path)){
+									string appendText = "This is extra text" + Environment.NewLine;
+									File.AppendAllText(args[4], value);
+																	
+								}
 							}
 							
 						}
