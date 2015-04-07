@@ -34,8 +34,7 @@ public class Ngetv1 {
         Scanner scan = new Scanner(System.in);
         String commande = scan.nextLine();
         String[] commandeSplited = commande.split("\\s+");
-        if(commandeSplited[0] !=null && commandeSplited[1] !=null)
-        {
+
         switch (commandeSplited[1]) {
             case "get":
                 String url = commandeSplited[3].replaceAll("\"","");
@@ -121,7 +120,5 @@ public class Ngetv1 {
                 }                
                 break;    
         }
-    }else  System.out.println("Erreur, la commande doit être du format: nget.exe get -url \"MonUrl\" pour un GET et pour un TEST le format est : nget.exe test -url \"MonUrl\" -times MaValeur ");
-
     }
 }
