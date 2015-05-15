@@ -34,7 +34,7 @@ namespace nget_v2
 	        }
 	    }
 		
-		public void Times(int repeats, string loadurl, bool avg){
+		public long[] Times(int repeats, string loadurl){
 			Stopwatch s;
 			long[] duration = new long[repeats];
 			for (int i=0;i<repeats;i++){
@@ -42,15 +42,8 @@ namespace nget_v2
 				getContentByUrl(loadurl);
 				s.Stop();
 				duration[i] = s.ElapsedMilliseconds;
-				if (!avg)
-				{
-		        	Console.WriteLine("Chargement n°" + (i + 1) + " : " + duration[i] + " ms");
-				}
 			}
-	        if (avg)
-	        {
-	        	Console.WriteLine(GetAverage(duration)+ " ms");
-	        }
+		    return duration;
 		}
 		
 		public String getContentByUrl(string url){
@@ -96,12 +89,14 @@ namespace nget_v2
 			if(args.Length >=4 &&( args[1] == "-url" && args[3] == "-times")){
 				int fois;
 				if(Int32.TryParse(args[4], out fois)){
-					
-					if(args.Length == 6 && args[5] == "-avg"){
-						Times(fois, args[2],true);
-					}
-					else
-						Times(fois, args[2],false);
+					long[] durations = Times(fois, args[2]);
+				    if (args.Length > 5 && args[5] == "-avg")
+				    	Console.WriteLine("Moyenne du temps de chargement : " + GetAverage(durations) +" ms avg");
+				    else
+				    {
+				        for (int i = 0; i < durations.Length; i++)
+                            Console.WriteLine("Chargement n°" + (i + 1) + " : " + durations[i] + " ms");
+				    }
 				}
 				else
 					Console.WriteLine("parametre -time : entier attendu");
