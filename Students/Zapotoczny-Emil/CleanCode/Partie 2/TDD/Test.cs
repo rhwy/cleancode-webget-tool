@@ -177,17 +177,5 @@ namespace TDD
 			}
 			return result;
 		}
-		
-		public string ToRomanLikeABoss(int value)
-		{
-			string result="";
-			while(value > 0)
-			{
-				if(value>=1000 && value<4999)
-				{
-					
-				}
-			}
-		}
 	}
 }

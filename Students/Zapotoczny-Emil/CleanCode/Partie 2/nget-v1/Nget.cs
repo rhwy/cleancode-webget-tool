@@ -7,9 +7,9 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using System.IO;
 using System.Net;
 using System.Diagnostics;
+using nget_v1;
 
 namespace nget_v1
 {
@@ -18,45 +18,69 @@ namespace nget_v1
 	/// </summary>
 	public class Nget
 	{
-		public Nget()
+		public void nget(string[] args)
 		{
+			if(!IsValidArguments(args)) return;
+			var uri = new Uri(args[2]);
 			
+			DoWork(args, uri);
 		}
 		
-		public void nget(string[] args)
+		public void DoWork(string[] args, Uri uri)
+		{
+			if(args.Length == 3) 
+				ReadMethod(uri);
+
+			else if(args.Length == 5 && args[0] == "get")
+				GetMethod(uri, args[4]);
+			
+			if(args.Length == 5 && args[0] == "test")
+				TestMethod(uri, args[4]);
+			
+			else if(args.Length == 6)
+				TestAverageTimeMethod(uri, args[4]);
+		}
+		
+		public void ReadMethod(Uri uri)
+		{
+			try 
+			{
+				var webClient = new WebClient();
+				Console.WriteLine(webClient.DownloadString(uri));
+				Exit();
+			}
+			catch {throw new Exception("Reader fail");}
+		}
+		
+		public void TestMethod(Uri uri, string args)
+		{
+			var tab = ExecuteDownloadString(uri,Convert.ToInt32(args),false);
+			Exit();
+		}
+		
+		public void GetMethod(Uri uri, string args)
+		{
+			var webClient = new WebClient();
+			var fileHelper = new FileHelperImplementation();
+			
+			var text = webClient.DownloadString(uri);
+			fileHelper.WriteAllText(args,text);
+			Exit();
+		}
+		
+		public void TestAverageTimeMethod(Uri uri, string args)
+		{
+			var totalTime = ExecuteDownloadString(uri, Convert.ToInt32(args),true);
+			Console.WriteLine("Temps moyen d'éxecution : " + totalTime + " ms");
+			Exit();
+		}
+		
+		public bool IsValidArguments(string[] args)
 		{
 			if(args.Length < 3)
 				throw new ArgumentException("Should get arguments");
 			
-			var uri = new Uri(args[2]);
-			
-			if(args.Length == 3)
-			{
-				try 
-				{
-					Console.WriteLine(new WebClient().DownloadString(uri));
-					Exit();
-				}
-				catch {throw new Exception("Reader fail");}
-			}
-			else if(args.Length == 5 && args[0] == "get")
-			{
-				var text = new WebClient().DownloadString(uri);
-				File.WriteAllText(args[4],text);
-				Exit();
-			}
-			
-			if(args.Length == 5 && args[0] == "test")
-			{
-				var tab = ExecuteDownloadString(uri,Convert.ToInt32(args[4]),false);
-				Exit();
-			}
-			else if(args.Length == 6)
-			{
-				var totalTime = ExecuteDownloadString(uri, Convert.ToInt32(args[4]),true);
-				Console.WriteLine("Temps moyen d'éxecution : " + totalTime + " ms");
-				Exit();
-			}
+			return true;
 		}
 
 		public double ExecuteDownloadString(Uri uri, int nb, bool isAverage)
