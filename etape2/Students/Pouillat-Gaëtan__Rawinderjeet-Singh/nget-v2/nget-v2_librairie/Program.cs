@@ -44,32 +44,30 @@ namespace nget_v2
 			return result;
 		}
 		
+		public bool fonctionGet(string[] args){
+			bool result = false;
+			if(args.Length >= 2 && args[1] == "-url"){
+				if(args.Length >= 5 && args[3] == "-save"){						
+					if(prog.writeUrlContentInFile(prog.getContentByUrl(args[2]),args[4]))
+						result = true;
+				}else{
+					Console.WriteLine(prog.getContentByUrl(args[2]));
+					result = true;
+				}
+			}
+			return result;
+		}
+		
 		public static void Main(string[] args)
 		{
 			Program prog = new Program();
 			if(args.Length == 0){
-				
 				Console.WriteLine("saisir parametre");
-				
 			}else if(args[0] == "get"){
 				
-				if(args.Length >= 2 && args[1] == "-url"){
-					
-					if(args.Length >= 5 && args[3] == "-save"){
-												
-						prog.writeUrlContentInFile(prog.getContentByUrl(args[2]),args[4]);
-					}else{
-						
-						try{
-							Console.WriteLine(prog.getContentByUrl(args[2]));
-						}catch(Exception ex){
-							Console.WriteLine(ex);
-						}
-					}
-				}
-				else{
+				if(!prog.fonctionGet(args))
 					Console.WriteLine("parametre de get : -url <url>");
-				}
+				
 			}else if(args[0] == "test"){
 				
 				if(args.Length >=4 &&( args[1] == "-url" && args[3] == "-times")){
@@ -84,21 +82,16 @@ namespace nget_v2
 								long resultat = 0;
 								
 								for(int i=0;i<fois;i++){
-									
 									long milliseconds1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-									
 									try{
 										prog.getContentByUrl(args[2]);
 									}
 									catch(Exception ex){
 										Console.WriteLine(ex);
 									}
-									
 									long milliseconds2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-									resultat += milliseconds2 - milliseconds1;
-									
+									resultat += milliseconds2 - milliseconds1;	
 								}
-								
 								Console.WriteLine("moyenne temps chargement: " + resultat/fois);
 								
 							}else{
@@ -110,19 +103,15 @@ namespace nget_v2
 						if(result){
 							
 							for(int i=0;i<fois;i++){
-								
 								long milliseconds1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-								
 								try{
 									prog.getContentByUrl(args[2]);
 								}
 								catch(Exception ex){
 									Console.WriteLine(ex);
 								}
-								
 								long milliseconds2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 								long resultat = milliseconds2 - milliseconds1;
-								
 								Console.WriteLine("temps test numero" + i + " : " + resultat);
 							}
 							

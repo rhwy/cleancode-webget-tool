@@ -16,7 +16,7 @@ namespace nget_v2_librairie
 	public class Test
 	{
 		[Test]
-		public void Should_show_the_content_of_a_page()
+		public void Should_not_return_content_of_a_page()
 		{
 			Program prog = new Program();
 			string content = prog.getContentByUrl("http://url-bidon.fr");
