@@ -31,15 +31,17 @@ namespace nget_v2
 			return content;
 		}
 		
-		public void writeUrlContentInFile(string contentUrl, string path){
+		public bool writeUrlContentInFile(string contentUrl, string path){
+			bool result = false;
 			try{		
 				StreamWriter sw = new StreamWriter(path);	
 				sw.Write(contentUrl);
 				sw.Close();
-							
+				result = true;			
 			}catch(Exception ex){
 				Console.WriteLine(ex);
 			}
+			return result;
 		}
 		
 		public static void Main(string[] args)

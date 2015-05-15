@@ -36,7 +36,10 @@ namespace nget_v2_librairie
 		[Test]
 		public void should_write_file()
 		{
-			
+			Program prog = new Program();
+			bool result = false;
+			result = prog.writeUrlContentInFile("<h1>test_content</h1>","Test.txt");
+			Assert.That(result,Is.EqualTo(true));
 		}
 	}
 }
