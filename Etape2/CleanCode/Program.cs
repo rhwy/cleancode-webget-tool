@@ -6,111 +6,152 @@ using System.Timers;
 using System.Diagnostics;
 using System.Collections.Generic;
 namespace CleanCode
-{   
+{
 	public interface IFileHelper {
-		void writeTo(string filePath,string s);
-
-
+		void WriteTo(string filePath,string s);
 	}
 	public interface IWebHelper {
-		 string getResults(string url);
+		string GetContent(string url);
 	}
+    public interface IChronoHelper {
+        void Start();
+        void Stop();
+        void Reset();
+        double ElapsedMiliSecond { get; }
+    }
+
 	class WebHelper: IWebHelper {
-		WebClient _client;
-		public WebHelper(WebClient _client){
-			this._client = _client;
+		private WebClient client;
+		public WebHelper(WebClient client){
+			this.client = client;
 		}
-		 string IWebHelper.getResults(string url){
-			return _client.DownloadString (url);
+		 string IWebHelper.GetContent(string url){
+			return client.DownloadString (url);
 		}
 	}
+
 	class FileHelper : IFileHelper {
-		 void IFileHelper.writeTo(string filePath, string s ){
-			File.WriteAllText(filePath, s);
-		}		
+        void IFileHelper.WriteTo(string filePath, string content)
+        {
+            File.WriteAllText(filePath, content);
+        }
+	}
+    class ChronoHelper : IChronoHelper {
+        Stopwatch watch;
 
+        void IChronoHelper.Start() {
+            watch.Start();
+        }
+        void IChronoHelper.Stop() {
+            watch.Stop();
+        }
+        void IChronoHelper.Reset() {
+            watch.Reset();
+        }
+        double IChronoHelper.ElapsedMiliSecond {
+            get {
+                return watch.ElapsedMilliseconds;
+            }
+        }
 
-	} 
+        public ChronoHelper(Stopwatch watch)
+        {
+            this.watch = watch;
+        }
+    }
 
 	public class ApiClient  {
-		IFileHelper file;
-		IWebHelper webHelper;
-		public ApiClient(IFileHelper file,IWebHelper webHelper){
+		private IFileHelper file;
+		private IWebHelper webHelper;
+        private IChronoHelper chrono;
+
+        public ApiClient(IFileHelper file,IWebHelper webHelper,IChronoHelper chrono){
 			this.file = file;
 			this.webHelper = webHelper;
+            this.chrono = chrono;
 		}
 
 		public  double GetAvg(int times, string url){
 			return GetTimesOfReq(url,times).Aggregate(0.0,(current,x )=>current+=x)/times;		
 		}
 
-		public  IEnumerable <double> GetTimesOfReq( string url,int times){
-			var watch = new Stopwatch ();
-			double[] duree = new double[times];
+		public  IEnumerable <double> GetTimesOfReq(string url, int times){
+			double[] durees = new double[times];
 			for (int i = 0; i < times; i++) {
-				watch.Start ();
+				chrono.Start ();
 				GetResults (url);
-				watch.Stop ();
-				duree [i] = watch.ElapsedMilliseconds;
+                chrono.Stop();
+                durees[i] = chrono.ElapsedMiliSecond;
+                chrono.Reset();
 			}
-			return duree;
-
+			return durees;
 		}
 		public  String GetResults (String url)
 		{	
-			
-			//if (!urlCible.Equals ("")) {
-			//	File.WriteAllText(urlCible,urlData);
-
-			//} 
-			return webHelper.getResults(url);
+			return webHelper.GetContent(url);
 		}
+
 		public void SaveResults(string url, string filePath){
-			file.writeTo (filePath, url);
+			file.WriteTo (filePath, GetResults(url));
 		
 		}
 	}
 	class MainClass
-	{   public static ApiClient apiClient;
+	{
+		public static readonly ApiClient apiClient = new ApiClient(
+            new FileHelper(),
+            new WebHelper(new WebClient()),
+            new ChronoHelper(new Stopwatch())
+        );
+		private const string helpText = "Utilisez get pour verifier le contenu et test pour tester la connection";
+        private const int typeIndex = 1;     //test or get
+        private const int urlIndex = 3;     //index de l'url de la page a charger
+        private const int filePathIndex = 5;     
+        private const int timeCountIndex = 5;     
+
 		public static void Main (string[] args)
 		{
-			apiClient = new ApiClient (new FileHelper(),new WebHelper(new WebClient()));
-			int lengthArgs = args.Length;
-			Console.WriteLine (lengthArgs);
-
-			if (args[1].Equals ("get")) {
-				if (lengthArgs > 4) {
-					if (args[4].Equals("-save"))
-						WriteToFile(args [3], args [5]);
-				}
-				else displayContent(args[3]);
-				
+            if (args.Length == 0) {
+                Console.WriteLine(helpText);
+                return;
+            }
+            switch (args[typeIndex]) {
+			case "get":
+				DoGet (args);
+				break;
+			case "test":
+				DoTest (args);
+				break;
+			default :
+				Console.WriteLine (helpText);
+				break;
 			}
-			if ((args[1].Equals ("test"))) {
-				if (lengthArgs > 6) {
-					if (args[6].Equals("-avg"))
-						displayAvg(args[3], int.Parse(args [5]));
-					}
-				else Test(args[3],int.Parse(args[5]));
-			}
-			
-		}
-		public static void GetWrite (String url)
-		{
-			Console.WriteLine (url);
 		}
 
-
-		public static void Test(String url, int times)
+		public static void DoGet(string [] args){
+			if (args.Contains("-save")) {
+				WriteToFile(args [urlIndex], args [filePathIndex]);
+                return;
+			}
+			displayContent(args[urlIndex]);
+		}
+		public static void DoTest (string[] args)
 		{
-			IEnumerable<double> duree = apiClient.GetTimesOfReq(url,times);
-			foreach (double time in duree)
+			if (args.Contains("-avg"))  {
+				displayAvg (args [urlIndex], int.Parse (args [timeCountIndex]));
+                return;
+            }
+			DisplayTime (args [urlIndex], int.Parse (args [timeCountIndex]));
+		}
+	
+		public static void DisplayTime(String url, int times) {
+			IEnumerable<double> durees = apiClient.GetTimesOfReq(url,times);
+			foreach (double time in durees)
 				Console.WriteLine (time);
 		}
 			
 		public static void WriteToFile(string url , string filePath){
 			apiClient.SaveResults (filePath, url);
-		
 		}
 		public static void  displayAvg (string url, int times ){
 			Console.WriteLine (apiClient.GetAvg(times,url));
