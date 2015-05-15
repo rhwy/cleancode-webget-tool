@@ -22,22 +22,24 @@ namespace nget_v1
 	class Principal
 	{
 		private WebClient client;
-		private string[] args;
-		private string url;
+		private readonly string[] args;
+		private readonly string url;
 		
 		public Principal(string[] arg)
 		{
 			args = arg;
 			url = args[2];
 			client = new WebClient();
+			string message = "";
 			
-			if(args[0] == "get") get();
-			else if(args[0] == "test") test();
-			else Console.WriteLine("Argument non valide");			
+			if(args[0] == "get") message = get();
+			else if(args[0] == "test") message = test();
+			else message = "Argument non valide";	
+			Console.WriteLine(message);
 			Console.ReadKey(true);
 		}
 		
-		private void test()
+		private string test()
 		{
 			int nbTimes = Convert.ToInt16(args[4]);
 			double[] timesArray = new double[nbTimes];
@@ -48,28 +50,32 @@ namespace nget_v1
 				TimeSpan TimeDif = FakeTime.Now().Subtract(FakeTime.Now());
 				timesArray[i] = TimeDif.TotalSeconds;		
 			}
-			testAVG(cumul,nbTimes);
+			return testAVG(cumul,nbTimes);					
 		}
 		
-		private void testAVG(double cumul,int nbTimes)
+		private string testAVG(double cumul,int nbTimes)
 		{
+			string contenu = "";
 			try {
 				if(args[5] == "-avg")
-					Console.WriteLine(cumul / nbTimes);				
+					contenu = Convert.ToString(cumul / nbTimes);
 			} catch (IndexOutOfRangeException e) {
-				Console.WriteLine(e.Message);			}
+				contenu = e.Message;			}
+			return contenu;
 		}
 		
-		private void get()
+		private string get()
 		{
+			string mess = "";
 			if(args[1] == "-url") {
 				
 				if(args[3] == "-save") {
 					client.DownloadFile(url, args[4]);
 				} else {
-					Console.WriteLine(client.DownloadString(url));
+					mess = client.DownloadString(url);
 				}
-			}
+			}			
+			return mess;
 		}
 	}
 	
