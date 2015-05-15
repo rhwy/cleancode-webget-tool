@@ -11,6 +11,13 @@ using System.Net;
 
 namespace nget_v1
 {
+	class FakeTime
+	{
+		public static DateTime Now()
+		{
+			return new DateTime(2011, 6, 10);
+		}
+	}
 	class Program
 	{
 		public static void Main(string[] args)
@@ -35,7 +42,7 @@ namespace nget_v1
 					double cumul = 0;
 					for(int i = 0; i < nbTimes; i++)
 					{
-						DateTime TimeStart = DateTime.Now;
+						DateTime TimeStart = FakeTime.Now();
 						client.DownloadString(url);
 						TimeSpan TimeDif = DateTime.Now.Subtract(TimeStart);
 						timesArray[i] = TimeDif.TotalSeconds;
@@ -58,6 +65,7 @@ namespace nget_v1
 						
 					}
 					break;
+				case "":
 				default:
 					Console.WriteLine("Argument non valide");
 					break;
