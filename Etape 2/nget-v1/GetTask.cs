@@ -19,9 +19,6 @@ namespace ngetv1
 		{
 
 			StringBuilder sb = new StringBuilder ();
-			
-			string sourceUrl = "";
-			string destUrl = "";
 
 			// Gestion des paramètres
 			int length = args.Length;

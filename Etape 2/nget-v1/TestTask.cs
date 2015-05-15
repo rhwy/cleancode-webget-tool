@@ -18,10 +18,6 @@ namespace ngetv1
 
 		private void DoTest (string[] args)
 		{
-			string sourceUrl = "";
-			int time = 0;
-			Boolean isAvg = false;
-
 			int length = args.Length;
 
 			InitializeAttributes (args, length);
