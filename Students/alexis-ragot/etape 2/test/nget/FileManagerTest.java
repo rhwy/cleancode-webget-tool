@@ -62,13 +62,16 @@ public class FileManagerTest {
      */
     @Test
     public void testCopieFileContent() throws Exception {
-        System.out.println("copieFileContent");
-        String originFileUrl = "";
-        String destinationFileUri = "";
+        String originFileUrl = "toto";
+        String destinationFileUri = "titi";
         FileManager instance = new FileManager();
-        instance.copieFileContent(originFileUrl, destinationFileUri);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        IFileReader fileReader = new FileReaderImpl();
+        boolean result = instance.copieFileContent(originFileUrl, destinationFileUri, fileReader);
+        try {
+            assertTrue(result);
+        } catch (Exception e) {
+            fail("Fail test");
+        }
     }
 
     /**

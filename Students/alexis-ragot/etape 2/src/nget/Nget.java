@@ -27,7 +27,7 @@ public class Nget {
      */
     public static void main(String[] args) {
         FileManager fileManager = new FileManager();
-        IFileReader fileReader = new FileReaderImpl();
+        IFileReader fileReader = new FileReaderOkImpl();
         try {
             if ((!args[0].equals("get")) && (!args[0].equals("test"))) {
                 throw new Exception("Invalid parameter");
@@ -48,7 +48,7 @@ public class Nget {
             }
             
             if (args[0].equals("get") && args[3].equals("-save") ) {
-                fileManager.copieFileContent(args[2], args[4]);
+                fileManager.copieFileContent(args[2], args[4], fileReader);
             }
             
             if (args[0].equals("test") && args[3].equals("-times") ) {

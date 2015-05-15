@@ -12,5 +12,6 @@ package nget;
 public interface IFileReader {
     
     public String readUrlFile(String urlFile);
+    public boolean copieFile(String origine, String destination);
     
 }

@@ -15,5 +15,10 @@ public class FileReaderImpl implements IFileReader{
     public String readUrlFile(String urlFile) {
         return "toto";
     }
+
+    @Override
+    public boolean copieFile(String origine, String destination) {
+        return true;
+    }
     
 }

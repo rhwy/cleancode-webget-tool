@@ -26,19 +26,9 @@ public class FileManager {
         return fileReader.readUrlFile(urlFile);
     }
 
-    public void copieFileContent(String originFileUrl, String destinationFileUri) throws MalformedURLException, FileNotFoundException, UnsupportedEncodingException, IOException{
-        URL url = new URL(originFileUrl);
-        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-        File file = new File(originFileUrl);
-        PrintWriter writer = new PrintWriter(destinationFileUri, "UTF-8");
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            writer.println(inputLine);
-        }
+    public boolean copieFileContent(String originFileUrl, String destinationFileUri, IFileReader fileReader) throws MalformedURLException, FileNotFoundException, UnsupportedEncodingException, IOException{
         
-        writer.close();
-        in.close();
+        return fileReader.copieFile(originFileUrl, destinationFileUri);
     }
     
     public void fileLoadingTime(String fileUrl, int nbLoading, boolean isAverage) throws MalformedURLException, IOException {
