@@ -7,115 +7,122 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 
-namespace nget_v1
+namespace nget_v2
 {
 	class Program
 	{
-		public static String getContentByUrl(string url){
+		
+		public long GetAverage(long[] duration)
+	    {
+	        if (duration.Length > 0)
+	        {
+	            long overallTime = 0;
+	            for (int i = 0; i < duration.Length; i++)
+	            {
+	                overallTime += duration[i];
+	            }
+	            long average = overallTime/duration.Length;
+	            return average;
+	        }
+	        else
+	        {
+	            return 0;
+	        }
+	    }
+		
+		public void Times(int repeats, string loadurl, bool avg){
+			Stopwatch s;
+			long[] duration = new long[repeats];
+			for (int i=0;i<repeats;i++){
+				s=Stopwatch.StartNew();
+				getContentByUrl(loadurl);
+				s.Stop();
+				duration[i] = s.ElapsedMilliseconds;
+				if (!avg)
+				{
+		        	Console.WriteLine("Chargement n°" + (i + 1) + " : " + duration[i] + " ms");
+				}
+			}
+	        if (avg)
+	        {
+	        	Console.WriteLine(GetAverage(duration)+ " ms");
+	        }
+		}
+		
+		public String getContentByUrl(string url){
 			WebClient wc = new WebClient();
-			return wc.DownloadString(url);
+			string content = "";
+			try {
+				content = wc.DownloadString(url);
+			}catch (Exception) {
+				
+				content = "<h1>hello</h1>";
+			}
+			return content;
+		}
+		
+		public bool writeUrlContentInFile(string contentUrl, string path){
+			bool result = false;
+			try{		
+				StreamWriter sw = new StreamWriter(path);	
+				sw.Write(contentUrl);
+				sw.Close();
+				result = true;			
+			}catch(Exception ex){
+				Console.WriteLine(ex);
+			}
+			return result;
+		}
+		
+		public bool fonctionGet(string[] args){
+			bool result = false;
+			if(args.Length >= 2 && args[1] == "-url"){
+				if(args.Length >= 5 && args[3] == "-save"){						
+					if(writeUrlContentInFile(getContentByUrl(args[2]),args[4]))
+						result = true;
+				}else{
+					Console.WriteLine(getContentByUrl(args[2]));
+					result = true;
+				}
+			}
+			return result;
+		}
+		
+		public void fonctionTest(string[] args){
+			if(args.Length >=4 &&( args[1] == "-url" && args[3] == "-times")){
+				int fois;
+				if(Int32.TryParse(args[4], out fois)){
+					
+					if(args.Length == 6 && args[5] == "-avg"){
+						Times(fois, args[2],true);
+					}
+					else
+						Times(fois, args[2],false);
+				}
+				else
+					Console.WriteLine("parametre -time : entier attendu");
+			}
+		}
+		
+		public void start(string[] args){
+			if(args.Length == 0){
+				Console.WriteLine("saisir parametre");
+			}else if(args[0] == "get"){
+				if(!fonctionGet(args))
+					Console.WriteLine("parametre de get : -url <url>");
+			}else if(args[0] == "test")
+				fonctionTest(args);
 		}
 		
 		public static void Main(string[] args)
 		{
-			if(args.Length == 0){
-				
-				Console.WriteLine("saisir parametre");
-				
-			}else if(args[0] == "get"){
-				
-				if(args.Length >= 2 && args[1] == "-url"){
-					
-					if(args.Length >= 5 && args[3] == "-save"){
-						
-						try{
-							
-							StreamWriter sw = new StreamWriter(args[4]);
- 						
-							sw.Write(getContentByUrl(args[2]));
-							sw.Close();
-							
-						}catch(Exception ex){
-							Console.WriteLine(ex);
-						}
-						
-						
-					}else{
-						try{
-							Console.WriteLine(getContentByUrl(args[2]));
-						}catch(Exception ex){
-							Console.WriteLine(ex);
-						}
-					}
-				}
-				else{
-					Console.WriteLine("parametre de get : -url <url>");
-				}
-			}else if(args[0] == "test"){
-				
-				if(args.Length >=4 &&( args[1] == "-url" && args[3] == "-times")){
-					
-					int fois;
-					bool result = Int32.TryParse(args[4], out fois);
-					
-					if(args.Length == 6 && args[5] == "-avg"){
-						
-							if(result){
-								
-								long resultat = 0;
-								
-								for(int i=0;i<fois;i++){
-									
-									long milliseconds1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-									
-									try{
-										getContentByUrl(args[2]);
-									}
-									catch(Exception ex){
-										Console.WriteLine(ex);
-									}
-									
-									long milliseconds2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-									resultat += milliseconds2 - milliseconds1;
-									
-								}
-								
-								Console.WriteLine("moyenne temps chargement: " + resultat/fois);
-								
-							}else{
-								Console.WriteLine("parametre -time : entier attendu");
-							}
-					}
-					else{
-	      				
-						if(result){
-							
-							for(int i=0;i<fois;i++){
-								
-								long milliseconds1 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-								
-								try{
-									getContentByUrl(args[2]);
-								}
-								catch(Exception ex){
-									Console.WriteLine(ex);
-								}
-								
-								long milliseconds2 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-								long resultat = milliseconds2 - milliseconds1;
-								
-								Console.WriteLine("temps test numero" + i + " : " + resultat);
-							}
-							
-						}else{
-							Console.WriteLine("parametre -time : entier attendu");
-						}
-					}	
-				}
-			}
+			Program prog = new Program();
+			prog.start(args);
+			Console.ReadLine();
 		}
 	}
 }
