@@ -11,13 +11,28 @@ using System.IO;
 using System.Net;
 using System.Diagnostics;
 namespace nget
+	
 {
-	public class  AppendAllText {
+	public interface Ifile{
+		void appendAllText(string[] args,string value);
+	}
+	
+	
+
+	public class appendallText : Ifile{
+
+		#region Ifile implementation
+
+		public void appendAllText(string args,string value)
+		{
+			File.AppendAllText(args, value);
+		}
+
+		#endregion
 		
 	}
-	/// <summary>
-	/// Description of ngetv2.
-	/// </summary>
+	
+
 	public class ngetv2
 	{
 		public ngetv2(string [] args)
@@ -76,7 +91,10 @@ namespace nget
 						string value =client.DownloadString(sURL);
 						
 						if(!File.Exists(path)){
-							File.AppendAllText(args[4], value);
+							appendallText app = new appendallText();
+							app.appendAllText(args[4],value);
+							
+							
 							
 						}
 						resultat="creation de fichier valide";
