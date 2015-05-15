@@ -9,6 +9,8 @@ namespace Test
 		[Test ()]
 		public void TestCase ()
 		{
+			var args = new [] { "get" };
+			stringBuilder SP = 
 		}
 	}
 }
