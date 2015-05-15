@@ -6,10 +6,10 @@ namespace ngetv1
 	{
 		public static void Main (string[] args)
 		{
-			if (args == null || args.Length == 0) {
-				Console.WriteLine ("Pas d'arguments");
-				return;
-			}
+			WebGet webGet = new WebGet();
+			string result = string.Empty;
+
+			result = webGet.checkForArguments(args);
 
 			System.Net.WebClient client = new System.Net.WebClient();
 
@@ -57,6 +57,69 @@ namespace ngetv1
 				}
 
 			}
+		}
+	}
+
+	class WebGet
+	{
+		public string checkForArguments(string[] args)
+		{
+			string result = string.Empty;
+			string action = string.Empty;
+
+			if (args == null || args.Length == 0) {
+				result = "Pas d'arguments";
+			} else {
+				result = checkAction (args);
+			}
+
+			return result;
+		}
+
+		public string checkAction(string[] arguments)
+		{
+			string result = String.Empty;
+			switch (arguments[0]) {
+
+			case "get": result = actionGet (arguments);
+				break;
+			
+			case "test": result = actionTest (arguments);
+				break;
+			}
+			return result;
+		}
+
+		public string actionGet(string[] args)
+		{
+			if(!checkURLArgument(args[1]) && args[2] != null) {
+				System.Net.WebClient client = new System.Net.WebClient ();
+				string webpage = client.DownloadString (args [2]);
+
+				if (args.Length >= 4 && args [3] == "-save") {
+					saveInFile (webpage, args[4]);
+					return;
+				} else
+					return webpage;
+			}
+		}
+
+		public string actionTest(string[] args)
+		{
+			return "ss";
+		}
+
+		public bool checkURLArgument(string urlAgument)
+		{
+			if (urlAgument == null || urlAgument != "-url")
+				return true;
+			
+			return false;
+		}
+
+		public void saveInFile(string toWrite, string path)
+		{
+			System.IO.File.WriteAllText (path, toWrite);
 		}
 	}
 }
