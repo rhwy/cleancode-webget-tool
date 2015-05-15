@@ -26,27 +26,29 @@ namespace nget_v1
 			_url 	= url;
 			_client = new WebClient();
 		}
-		
-		
-		public void print() {
+
+		string getFromUrl(string url)
+		{
 			try {
-			   string content = _client.DownloadString(_url);
-			   Console.Write(content);
+			   string content = _client.DownloadString(url);
 			} catch (WebException){
 				Console.WriteLine("URL inaccessible");
 			} catch (Exception e){
 				Console.WriteLine(e);
 			}
+			return content;
+		}
+		
+		public void print() {
+			string content = getFromUrl(_url);
+			Console.Write(content);
 		}
 		
 		public void download(string path) {
-			
 			try {
-			   string content = _client.DownloadString(_url);
+			   string content = getFromUrl(_url);
 			   File.WriteAllText(path, content);
 			   Console.WriteLine("Données sauvegardées");
-			} catch (WebException){
-				Console.WriteLine("URL inaccessible");
 			} catch (UnauthorizedAccessException){
 				Console.WriteLine("L'emplacement indiqué est inaccessible. Merci de vérifier les droits d'accès");
 			} catch (Exception e){
@@ -62,13 +64,7 @@ namespace nget_v1
 			for (int i = 0; i < nb_loads; i++) {
 				stopwatch = Stopwatch.StartNew();
 				
-				try {
-					_client.DownloadString(_url);
-				} catch (WebException){
-					Console.WriteLine("URL inaccessible");
-				} catch (Exception e){
-					Console.WriteLine(e);
-				}
+				getFromUrl(_url);
 				
 				stopwatch.Stop();
 				duration[i] = stopwatch.ElapsedMilliseconds;
@@ -77,19 +73,24 @@ namespace nget_v1
 			
 			// 2) Affichage du resultat
 			if (print_avg) {
-				long moyenne = 0;
-				for (int i = 0; i < duration.Length; i++) {
-					moyenne += duration[i];
-				}
-				moyenne = moyenne / nb_loads;
-				
-				Console.WriteLine("Temps de chargement moyen : " + moyenne + " ms");
+				print_avg(duration, nb_loads);
 			} else {
 				for (int i = 0; i < duration.Length; i++) {
 					Console.WriteLine(i + " => " + duration[i] + " ms");
 				}
 			}
 			
+		}
+
+		void print_avg(long[] duration, int nb_loads)
+		{
+			long moyenne = 0;
+			for (int i = 0; i < duration.Length; i++) {
+				moyenne += duration[i];
+			}
+			moyenne = moyenne / nb_loads;
+			
+			Console.WriteLine("Temps de chargement moyen : " + moyenne + " ms");
 		}
 	}
 }
