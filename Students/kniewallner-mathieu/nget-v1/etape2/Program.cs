@@ -6,19 +6,21 @@ using System.Net;
 namespace ngetv1 {
 	class MainClass {
 		public static void Main (string[] args) {
+
 			if (testParameters(args)) {
+			Helper helper = new Helper(args);
 				if (args[0] == "get") {
 					if (args.Length <= 3) {
-							Console.WriteLine(displayFromURL (args[2]));
+							Console.WriteLine(helper.displayFromURL ());
 						} else {
-							saveContentFromURL (args[2], args[4]);
+							helper.saveContentFromURL ();
 						}
 				} else {
 					if (args.Length <= 5) {
 						for (int i = 0; i < Convert.ToInt16(args[4]); i++)
-							Console.WriteLine(testForURL (args[2]) + "ms");
+							Console.WriteLine(helper.testForURL () + "ms");
 					} else {
-						Console.WriteLine("Moyenne : " + testForURLAverage (args[2], Convert.ToInt16(args[4])) + "ms");
+						Console.WriteLine("Moyenne : " + helper.testForURLAverage () + "ms");
 					}
 				}
 			}
@@ -65,36 +67,6 @@ namespace ngetv1 {
 					throw new Exception ("Paramètre 6 non reconnu");
 			}
 			return true;
-		}
-
-		private static string displayFromURL(string url) {
-			return (new WebClient ()).DownloadString (url);
-		}
-		
-		private static void saveContentFromURL(string url, string destination) {
-			TextWriter tw = new StreamWriter(destination);
-			tw.Write(displayFromURL(url));
-			Console.WriteLine("Contenu sauvé");
-		}
-
-		private static long testForURL(string url) {
-			Stopwatch sw;
-			
-			sw = Stopwatch.StartNew();
-			(new WebClient ()).DownloadString (url);
-			sw.Stop();
-				
-			return sw.ElapsedMilliseconds;
-		}
-		
-		private static long testForURLAverage(string url, int iteration) {
-			long swSum = 0;
-			
-			for (int i = 0; i < iteration; i++) {
-				swSum += testForURL(url);
-			}
-			
-			return swSum / iteration;
 		}
 	}
 }
