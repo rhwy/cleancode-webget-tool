@@ -36,6 +36,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestTask.cs" />
+    <Compile Include="UsageUtils.cs" />
+    <Compile Include="ArrayUtils.cs" />
+    <Compile Include="GetTask.cs" />
+    <Compile Include="WebGet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
