@@ -10,7 +10,10 @@ namespace ngetv1
 			string result = string.Empty;
 
 			result = webGet.checkForArguments(args);
+			Console.WriteLine (result);
+			Console.ReadLine ();
 
+			/*
 			System.Net.WebClient client = new System.Net.WebClient();
 
 			if (args [0] == "get") {
@@ -56,7 +59,7 @@ namespace ngetv1
 
 				}
 
-			}
+			}*/
 		}
 	}
 
@@ -92,16 +95,18 @@ namespace ngetv1
 
 		public string actionGet(string[] args)
 		{
+			string result = string.Empty;
 			if(!checkURLArgument(args[1]) && args[2] != null) {
+				/// à isoler : System.Net.WebClient client = new System.Net.WebClient (); 
 				System.Net.WebClient client = new System.Net.WebClient ();
 				string webpage = client.DownloadString (args [2]);
 
 				if (args.Length >= 4 && args [3] == "-save") {
 					saveInFile (webpage, args[4]);
-					return;
 				} else
-					return webpage;
+					result = webpage;
 			}
+			return result;
 		}
 
 		public string actionTest(string[] args)
@@ -118,7 +123,8 @@ namespace ngetv1
 		}
 
 		public void saveInFile(string toWrite, string path)
-		{
+		{	
+			/// à isoler
 			System.IO.File.WriteAllText (path, toWrite);
 		}
 	}
