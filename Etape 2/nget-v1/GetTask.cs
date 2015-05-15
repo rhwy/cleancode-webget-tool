@@ -7,6 +7,9 @@ namespace ngetv1
 {
 	public class GetTask
 	{
+		private string sourceUrl { get; set;}
+		private string destUrl { get; set;}
+
 		public GetTask (string[] args)
 		{
 			DoGet (args);
@@ -22,6 +25,20 @@ namespace ngetv1
 
 			// Gestion des paramètres
 			int length = args.Length;
+
+			InitializeAttributes (args, length);
+
+			if (sourceUrl == null || String.IsNullOrEmpty (sourceUrl)) {
+				throw new Exception (UsageUtils.GetStringUnknownParameter (sourceUrl));
+			}
+
+			var page = (new WebClient ()).DownloadString (sourceUrl);
+
+			PrintLogs (sb, sourceUrl, destUrl, page);
+		}
+
+		private void InitializeAttributes(string[] args, int length)
+		{
 			for (int i = 0; i <= length - 1; i++) {
 
 				if (args [i] == null || String.IsNullOrEmpty (args [i])) {
@@ -36,14 +53,6 @@ namespace ngetv1
 					destUrl = args [i + 1];
 				}
 			}
-
-			if (sourceUrl == null || String.IsNullOrEmpty (sourceUrl)) {
-				throw new Exception (UsageUtils.GetStringUnknownParameter (sourceUrl));
-			}
-
-			var page = (new WebClient ()).DownloadString (sourceUrl);
-
-			PrintLogs (sb, sourceUrl, destUrl, page);
 		}
 
 		private void PrintLogs(StringBuilder sb, string sourceUrl, string destUrl, string page)
