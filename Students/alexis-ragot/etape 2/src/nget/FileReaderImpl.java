@@ -5,6 +5,11 @@
  */
 package nget;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Alexis Ragot <alexis.ragot@maarch.org>
@@ -20,5 +25,17 @@ public class FileReaderImpl implements IFileReader{
     public boolean copieFile(String origine, String destination) {
         return true;
     }
+
+    @Override
+    public boolean readAllFileContent(String fileUrl) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FileReaderImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
+    
+    
     
 }

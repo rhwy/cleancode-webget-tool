@@ -62,11 +62,9 @@ public class FileManagerTest {
      */
     @Test
     public void testCopieFileContent() throws Exception {
-        String originFileUrl = "toto";
-        String destinationFileUri = "titi";
         FileManager instance = new FileManager();
         IFileReader fileReader = new FileReaderImpl();
-        boolean result = instance.copieFileContent(originFileUrl, destinationFileUri, fileReader);
+        boolean result = instance.copieFileContent("", "", fileReader);
         try {
             assertTrue(result);
         } catch (Exception e) {
@@ -79,14 +77,19 @@ public class FileManagerTest {
      */
     @Test
     public void testFileLoadingTime() throws Exception {
-        System.out.println("fileLoadingTime");
-        String fileUrl = "";
-        int nbLoading = 0;
-        boolean isAverage = false;
         FileManager instance = new FileManager();
-        instance.fileLoadingTime(fileUrl, nbLoading, isAverage);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        IFileReader fileReader = new FileReaderImpl();
+        float result = 0;
+        
+        try {
+            result = instance.fileLoadingTime("", 2, true, fileReader);
+            assertNotNull(result);
+            assertTrue(result > 0);
+            result = instance.fileLoadingTime("", 2, false, fileReader);
+            assertTrue(result == 0);
+        } catch (Exception e) {
+            fail("Fail test");
+        }
     }
     
 }

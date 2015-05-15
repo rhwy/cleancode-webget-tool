@@ -70,5 +70,20 @@ public class FileReaderOkImpl implements IFileReader{
         
         return true;
     }
-    
+
+    @Override
+    public boolean readAllFileContent(String fileUrl) {
+        try {
+            URL url = new URL(fileUrl);
+            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+            while (in.readLine() != null);
+            in.close();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(FileReaderOkImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FileReaderOkImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return true;
+    }
 }

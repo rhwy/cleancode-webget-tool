@@ -31,19 +31,15 @@ public class FileManager {
         return fileReader.copieFile(originFileUrl, destinationFileUri);
     }
     
-    public void fileLoadingTime(String fileUrl, int nbLoading, boolean isAverage) throws MalformedURLException, IOException {
+    public float fileLoadingTime(String fileUrl, int nbLoading, boolean isAverage, IFileReader fileReader) throws MalformedURLException, IOException {
         float beginTime = 0;
         float executionTime = 0;
         float totalTime = 0;
+        float result = 0;
 
-        URL url = new URL(fileUrl);
-            
         for (int i=0; i<nbLoading; i++) {
             beginTime = System.nanoTime();
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-            
-            while (in.readLine() != null);
-
+            fileReader.readAllFileContent(fileUrl);
             executionTime = System.nanoTime() - beginTime;
             
             if (isAverage) {
@@ -51,13 +47,14 @@ public class FileManager {
             } else {
                 System.out.println(executionTime);
             }
-            
-            in.close();
         }
         
         if (isAverage) {
-            System.out.println(totalTime / nbLoading);
+            result = totalTime / nbLoading;
+            System.out.println(result);
+            return result;
         }
         
+        return 0;
     }
 }

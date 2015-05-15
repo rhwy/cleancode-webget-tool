@@ -53,9 +53,9 @@ public class Nget {
             
             if (args[0].equals("test") && args[3].equals("-times") ) {
                 if(args[5] != null && args[5].equals("-avg")) {
-                    fileManager.fileLoadingTime(args[2], Integer.parseInt(args[4]), true);
+                    fileManager.fileLoadingTime(args[2], Integer.parseInt(args[4]), true, fileReader);
                 } else {
-                    fileManager.fileLoadingTime(args[2], Integer.parseInt(args[4]), false);
+                    fileManager.fileLoadingTime(args[2], Integer.parseInt(args[4]), false, fileReader);
                 }
             }
             
