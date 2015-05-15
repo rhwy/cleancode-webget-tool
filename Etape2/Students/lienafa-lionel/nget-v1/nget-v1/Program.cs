@@ -19,6 +19,14 @@ namespace nget_v1
 		}
 	}
 	
+	class MyException
+	{
+		public MyException(string exception)
+		{
+			Console.WriteLine(exception);
+		}
+	}
+	
 	class Principal
 	{
 		private WebClient client;
@@ -30,16 +38,15 @@ namespace nget_v1
 			args = arg;
 			url = args[2];
 			client = new WebClient();
-			string message = "";
-			
-			if(args[0] == "get") message = get();
-			else if(args[0] == "test") message = test();
-			else message = "Argument non valide";	
-			Console.WriteLine(message);
+			int res = 0;
+			if(args[0] == "get")  res = get();
+			else if(args[0] == "test") res = test();
+			else new MyException("Argument non valide");
+			if(res < 0) Console.WriteLine("Exception générée");
 			Console.ReadKey(true);
 		}
 		
-		private string test()
+		private int test()
 		{
 			int nbTimes = Convert.ToInt16(args[4]);
 			double[] timesArray = new double[nbTimes];
@@ -53,29 +60,30 @@ namespace nget_v1
 			return testAVG(cumul,nbTimes);					
 		}
 		
-		private string testAVG(double cumul,int nbTimes)
+		private int testAVG(double cumul,int nbTimes)
 		{
-			string contenu = "";
 			try {
 				if(args[5] == "-avg")
-					contenu = Convert.ToString(cumul / nbTimes);
+					Console.WriteLine(Convert.ToString(cumul / nbTimes));
 			} catch (IndexOutOfRangeException e) {
-				contenu = e.Message;			}
-			return contenu;
+				new MyException(e.Message);		
+				return -1;		
+			}
+			return 0;
 		}
 		
-		private string get()
+		private int get()
 		{
-			string mess = "";
 			if(args[1] == "-url") {
 				
 				if(args[3] == "-save") {
 					client.DownloadFile(url, args[4]);
 				} else {
-					mess = client.DownloadString(url);
+					new MyException(client.DownloadString(url));
+					return -1;
 				}
 			}			
-			return mess;
+			return 0;
 		}
 	}
 	
