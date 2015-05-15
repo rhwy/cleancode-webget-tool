@@ -1,4 +1,7 @@
 using System;
+using System.Net;
+using System.Diagnostics;
+using System.IO;
 
 namespace ngetv1
 {
@@ -34,13 +37,17 @@ namespace ngetv1
 		public string checkAction(string[] arguments)
 		{
 			string result = String.Empty;
-			switch (arguments[0]) {
+			if (!checkURLArgument (arguments [1]) && arguments [2] != null) {
+				switch (arguments [0]) {
 
-			case "get": result = actionGet (arguments);
-				break;
+				case "get":
+					result = actionGet (arguments);
+					break;
 			
-			case "test": result = actionTest (arguments);
-				break;
+				case "test":
+					result = actionTest (arguments);
+					break;
+				}
 			}
 			return result;
 		}
@@ -48,16 +55,14 @@ namespace ngetv1
 		public string actionGet(string[] args)
 		{
 			string result = string.Empty;
-			if(!checkURLArgument(args[1]) && args[2] != null) {
-				/// à isoler : System.Net.WebClient client = new System.Net.WebClient (); 
-				System.Net.WebClient client = new System.Net.WebClient ();
-				string webpage = client.DownloadString (args [2]);
+			IWebDownloader downloader = new WebDownloader();
+			string webpage = downloader.download (args [2]);
 
-				if (args.Length >= 4 && args [3] == "-save") {
-					saveInFile (webpage, args[4]);
-				} else
-					result = webpage;
-			}
+			if (args.Length >= 4 && args [3] == "-save") {
+				saveInFile (webpage, args[4]);
+			} else
+				result = webpage;
+			
 			return result;
 		}
 
@@ -65,11 +70,8 @@ namespace ngetv1
 		{
 			string result = string.Empty;
 
-			if (!checkURLArgument (args [1]) && args [2] != null) {
-
-				if (args [3] == "-times" && args[4] != null) {
-					result = getURLMultipleTime (args [2], args [4]);
-				}
+			if (args [3] == "-times" && args[4] != null) {
+				result = getURLMultipleTime (args [2], args [4]);
 			}
 			return result;
 		}
@@ -84,20 +86,21 @@ namespace ngetv1
 
 		public void saveInFile(string toWrite, string path)
 		{	
-			/// à isoler
-			System.IO.File.WriteAllText (path, toWrite);
+			IFileWriter writer = new FileWriter ();
+			writer.writeInfile (path, toWrite);
 		}
 
 		public string getURLMultipleTime(string url, string multiple)
 		{
-			System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch ();
-			System.Net.WebClient client = new System.Net.WebClient ();
+			Stopwatch timer = new Stopwatch ();
+			IWebDownloader downloader = new WebDownloader();
 			string result = string.Empty;
 			int nb = 0;
 			TimeSpan compteur = new TimeSpan();
+
 			while (nb < Int32.Parse(multiple)) {
 				timer.Start ();
-				client.DownloadString (url);
+				downloader.download (url);
 				timer.Stop ();
 
 				TimeSpan ts = timer.Elapsed;
@@ -110,5 +113,28 @@ namespace ngetv1
 
 			return result;
 		}
+
+		public interface IFileWriter {
+			void writeInfile(string path,string content);
+		}
+
+		public interface IWebDownloader {
+			string download(string url);
+		}
+
+		class WebDownloader : IWebDownloader {
+			WebClient client;
+
+			string IWebDownloader.download(string url){
+				client = new WebClient ();
+				return client.DownloadString (url);
+			}
+		}
+
+		class FileWriter : IFileWriter {
+			void IFileWriter.writeInfile(string path, string content){
+				File.WriteAllText(path, content);
+			}		
+		} 
 	}
 }
