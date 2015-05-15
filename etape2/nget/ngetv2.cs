@@ -13,26 +13,7 @@ using System.Diagnostics;
 namespace nget
 	
 {
-	public interface Ifile{
-		void appendAllText(string[] args,string value);
-	}
 	
-	
-
-	public class appendallText : Ifile{
-
-		#region Ifile implementation
-
-		public void appendAllText(string args,string value)
-		{
-			File.AppendAllText(args, value);
-		}
-
-		#endregion
-		
-	}
-	
-
 	public class ngetv2
 	{
 		public ngetv2(string [] args)
@@ -64,14 +45,14 @@ namespace nget
 			/*
 					 tester Si la commande get a de paramétres
 			 */
-			if(string.IsNullOrEmpty(args[1])|string.IsNullOrEmpty(args[2])){
+			if(isValidArgs(args[1],args[2])){
 				resultat="paramétres de commande Get Invalide";
 				/*
 					 tester Si la commande get a de 2 paramétres
 					 exepmle : get -url "aa"
 				 */
 			}else{
-				if(args.Length==3 &&args[1].Equals("-url")) {
+				if(args.Length==3 && args[1].Equals("-url")) {
 					string sURL=args[2];
 					WebClient client=new WebClient();
 					string value =client.DownloadString(sURL);
@@ -104,13 +85,11 @@ namespace nget
 			return resultat;
 		}
 		
-		
-		
 		string ArgIsTest(string[] args){
 			string resultat=string.Empty;
 			
 			resultat="Test";
-			if(string.IsNullOrEmpty(args[1])|string.IsNullOrEmpty(args[2])|string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
+			if(isValidArgs(args[1],args[2],args[3],args[4])){
 				resultat="Les paramétre de commande Test Invalide";
 			}else if(args.Length==5 & args[1].Equals("-url")&args[3].Equals("-times")){
 				int numEssai=int.Parse(args[4]);
@@ -130,6 +109,14 @@ namespace nget
 				}
 			}
 			return resultat;
+		}
+		bool isValidArgs(params string[] Args){
+			bool isValid = false;
+			foreach (var arg in Args)
+				if(string.IsNullOrEmpty(arg))
+					isValid=true;
+			return isValid;
+			
 		}
 	}
 	
