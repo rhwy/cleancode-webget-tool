@@ -29,7 +29,10 @@ namespace nget_v1
 		public void DoWork(string[] args, Uri uri)
 		{
 			if(args.Length == 3) 
-				ReadMethod(uri);
+			{
+				Console.WriteLine(ReadMethod(uri));
+				Exit();
+			}
 
 			else if(args.Length == 5 && args[0] == "get")
 				GetMethod(uri, args[4]);
@@ -38,18 +41,23 @@ namespace nget_v1
 				TestMethod(uri, args[4]);
 			
 			else if(args.Length == 6)
-				TestAverageTimeMethod(uri, args[4]);
+			{
+				Console.WriteLine("Temps moyen d'éxecution : " + TestAverageTimeMethod(uri, args[4]) + " ms");
+				Exit();
+			}
 		}
 		
-		public void ReadMethod(Uri uri)
+		public string ReadMethod(Uri uri)
 		{
 			try 
 			{
 				var webClient = new WebClient();
-				Console.WriteLine(webClient.DownloadString(uri));
-				Exit();
+				return webClient.DownloadString(uri);
 			}
-			catch {throw new Exception("Reader fail");}
+			catch 
+			{
+				return("Reader fail");
+			}
 		}
 		
 		public void TestMethod(Uri uri, string args)
@@ -68,11 +76,10 @@ namespace nget_v1
 			Exit();
 		}
 		
-		public void TestAverageTimeMethod(Uri uri, string args)
+		public double TestAverageTimeMethod(Uri uri, string args)
 		{
 			var totalTime = ExecuteDownloadString(uri, Convert.ToInt32(args),true);
-			Console.WriteLine("Temps moyen d'éxecution : " + totalTime + " ms");
-			Exit();
+			return totalTime;
 		}
 		
 		public bool IsValidArguments(string[] args)
@@ -85,19 +92,26 @@ namespace nget_v1
 
 		public double ExecuteDownloadString(Uri uri, int nb, bool isAverage)
 		{
-			var totalTime = 0.0;
-			var stop = new Stopwatch();
-			for(var i=0; i<nb; i++)
+			try
 			{
-				stop.Reset();
-				stop.Start();
-				new WebClient().DownloadString(uri);
-				stop.Stop();
-				if(!isAverage)
-					Console.WriteLine("Temps n° " + (i+1) + " : " + stop.ElapsedMilliseconds + "ms");
-				totalTime += stop.ElapsedMilliseconds;
+				var totalTime = 0.0;
+				var stop = new Stopwatch();
+				for(var i=0; i<nb; i++)
+				{
+					stop.Reset();
+					stop.Start();
+					new WebClient().DownloadString(uri);
+					stop.Stop();
+					if(!isAverage)
+						Console.WriteLine("Temps n° " + (i+1) + " : " + stop.ElapsedMilliseconds + "ms");
+					totalTime += stop.ElapsedMilliseconds;
+				}
+				return totalTime;
 			}
-			return totalTime;
+			catch
+			{
+				throw new Exception("ExecuteDownloadString is end with errors");
+			}
 		}
 				
 		public void Exit()
