@@ -33,7 +33,7 @@ namespace nget_v1
 			
 			switch(args[0]) {
 				case "get":
-
+					get();
 					break;
 				case "test":
 					test();
