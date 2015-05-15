@@ -11,7 +11,7 @@ namespace ngetv1
 			DoTest (args);
 		}
 
-		private void DoTest(string[] args) 
+		private void DoTest (string[] args)
 		{
 			string sourceUrl = "";
 			int time = 0;

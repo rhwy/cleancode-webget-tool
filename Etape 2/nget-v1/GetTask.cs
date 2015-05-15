@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.IO;
+using System.Text;
 
 namespace ngetv1
 {
@@ -11,9 +12,11 @@ namespace ngetv1
 			DoGet (args);
 		}
 
-		private void DoGet(string[] args)
+		private void DoGet (string[] args)
 		{
 
+			StringBuilder sb = new StringBuilder ();
+			
 			string sourceUrl = "";
 			string destUrl = "";
 
@@ -40,21 +43,35 @@ namespace ngetv1
 
 			var page = (new WebClient ()).DownloadString (sourceUrl);
 
-			Console.WriteLine ("Printing content of " + sourceUrl);
-			Console.WriteLine ("");
-			Console.WriteLine (page);
-			Console.WriteLine ("");
+			PrintLogs (sb, sourceUrl, destUrl, page);
+		}
+
+		private void PrintLogs(StringBuilder sb, string sourceUrl, string destUrl, string page)
+		{
+			sb.Append ("Printing content of " + sourceUrl);
+			sb.AppendLine ();
+			sb.Append (page);
+			sb.AppendLine ();
 
 			// Si l'URL de destination est renseignée
 			if (destUrl != null && !String.IsNullOrEmpty (destUrl)) {
-
-				Console.WriteLine ("Saving to " + sourceUrl);
-
-				TextWriter tw = new StreamWriter (destUrl, true);
-				tw.WriteLine (page);
-				tw.Close ();
-
+				sb.Append ("Saving to " + sourceUrl);
+				WriteToFile (destUrl, page);
 			}
+
+			WriteToConsole (sb);
+		}
+
+		private void WriteToConsole(System.Text.StringBuilder sb )
+		{
+			Console.WriteLine (sb);
+		}
+
+		private void WriteToFile(string destUrl, string content)
+		{
+			TextWriter tw = new StreamWriter (destUrl, true);
+			tw.WriteLine (content);
+			tw.Close ();
 		}
 	}
 }
