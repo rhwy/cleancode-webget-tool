@@ -13,7 +13,7 @@ namespace ngetv1 {
 					if (args.Length <= 3) {
 							Console.WriteLine(helper.displayFromURL ());
 						} else {
-							helper.saveContentFromURL ();
+							Console.WriteLine(helper.saveContentFromURL ());
 						}
 				} else {
 					if (args.Length <= 5) {

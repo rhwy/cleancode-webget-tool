@@ -26,4 +26,18 @@ namespace ngetv1
 			Assert.AreEqual (expected, result);
 		}
 	}
+
+	public class FakeDownloader: IDownloader {
+		public string DownloadString (string path)
+		{
+			return path;
+		}
+	}
+
+	public class FakeWriter: IWriter {
+		public string Write (string path, string content)
+		{
+			return "Contenu sauvé";
+		}
+	}
 }

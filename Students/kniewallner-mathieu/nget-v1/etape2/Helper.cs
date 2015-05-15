@@ -8,6 +8,8 @@ namespace ngetv1
 	public class Helper
 	{
 		private string[] args;
+		private IDownloader Downloader;
+		private IWriter Writer;
 
 		public Helper (string[] args)
 		{
@@ -15,13 +17,11 @@ namespace ngetv1
 		}
 
 		public string displayFromURL() {
-			return (new WebClient ()).DownloadString (args[2]);
+			return Downloader.DownloadString(args[2]);
 		}
 
-		public void saveContentFromURL() {
-			TextWriter tw = new StreamWriter(args[2]);
-			tw.Write(displayFromURL());
-			Console.WriteLine("Contenu sauvé");
+		public string saveContentFromURL() {
+			return Writer.Write (args[2], displayFromURL);
 		}
 
 		public long testForURL() {
@@ -44,6 +44,30 @@ namespace ngetv1
 			}
 
 			return swSum / iteration;
+		}
+	}
+
+	public interface IDownloader {
+		string DownloadString(string path);
+	}
+
+	public class Downloader: IDownloader {
+		public string DownloadString (string path)
+		{
+			return (new WebClient ()).DownloadString (path);
+		}
+	}
+
+	public interface IWriter {
+		string Write(string path, string content);
+	}
+
+	public class Writer: IWriter {
+		public string Write (string path, string content)
+		{
+			TextWriter tw = new StreamWriter(path);
+			tw.Write(content);
+			return "Contenu sauvé";
 		}
 	}
 }
