@@ -31,53 +31,36 @@ namespace nget_v1
 			url = args[2];
 			client = new WebClient();
 			
-			switch(args[0]) {
-				case "get":
-					get();
-					break;
-				case "test":
-					test();
-					break;
-				case "":
-				default:
-					Console.WriteLine("Argument non valide");
-					break;
-			}
+			if(args[0] == "get") get();
+			else if(args[0] == "test") test();
+			else Console.WriteLine("Argument non valide");			
 			Console.ReadKey(true);
 		}
 		
-		public void test()
+		private void test()
 		{
 			int nbTimes = Convert.ToInt16(args[4]);
 			double[] timesArray = new double[nbTimes];
 			double cumul = 0;
 			for(int i = 0; i < nbTimes; i++)
 			{
-				DateTime TimeStart = FakeTime.Now();
 				client.DownloadString(url);
-				TimeSpan TimeDif = FakeTime.Now().Subtract(TimeStart);
-				timesArray[i] = TimeDif.TotalSeconds;
-				
-				try {
-						if(args[5] == "-avg") {
-							cumul += TimeDif.TotalSeconds;
-						}
-				} catch (IndexOutOfRangeException e) {
-					Console.WriteLine(TimeDif.TotalSeconds);
-					
-					}
+				TimeSpan TimeDif = FakeTime.Now().Subtract(FakeTime.Now());
+				timesArray[i] = TimeDif.TotalSeconds;		
 			}
-			
-			try {
-				if(args[5] == "-avg") {
-					Console.WriteLine(cumul / nbTimes);
-				}
-			} catch (IndexOutOfRangeException e) {
-				
-			}
+			testAVG(cumul,nbTimes);
 		}
 		
-		public void get()
+		private void testAVG(double cumul,int nbTimes)
+		{
+			try {
+				if(args[5] == "-avg")
+					Console.WriteLine(cumul / nbTimes);				
+			} catch (IndexOutOfRangeException e) {
+				Console.WriteLine(e.Message);			}
+		}
+		
+		private void get()
 		{
 			if(args[1] == "-url") {
 				
