@@ -60,9 +60,7 @@ namespace nget
 								}
 								Console.WriteLine("creation de fichier valide");
 							}
-							
 						}
-						
 					}
 					/*
 					 Tester Si la commande est Test
@@ -74,7 +72,6 @@ namespace nget
 					}else if(args.Length==5 & args[1].Equals("-url")&args[3].Equals("-times")){
 						int numEssai=int.Parse(args[4]);
 						int i=0;
-						
 						string sURL=args[2];
 						if(int.Parse(args[4])>0){
 							while(i<numEssai){
@@ -82,26 +79,18 @@ namespace nget
 								WebClient client=new WebClient();
 								string value =client.DownloadString(sURL);
 								stopwatch.Stop();
-								
 								i++;
 								Console.WriteLine("le chargement N° :{0}:{1} ms",i,stopwatch.Elapsed.TotalMilliseconds);
 							}
 						}else{
 							Console.WriteLine("Le nombre doit être positive");
 						}
-						
-						
 					}
 					
 				}else{
 					Console.WriteLine("Commande Invalide");
 				}
-				
-				
 			}
-			
-			
-			
 			Console.ReadKey(true);
 		}
 	}
