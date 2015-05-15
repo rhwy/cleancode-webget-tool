@@ -37,16 +37,7 @@ namespace nget_v1
 		[Test]
 		public void AfficheUrl()
 		{
-			var sw = new StringWriter();
-		    Console.SetOut(sw);
-		    
-		    string[] args = {};
-		    
-		    var nget = new Nget(args);
 			
-			const string expected = @"Utilisataion : <get|test> -url <url> <-times|-save> <nb_of_loads> -avg";
-		    
-		    Assert.AreEqual(expected, sw.ToString());
 		}
 	}
 }

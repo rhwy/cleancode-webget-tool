@@ -63,13 +63,11 @@ namespace nget_v1
 			// 1) On charge l'URL x fois 
 			for (int i = 0; i < nb_loads; i++) {
 				stopwatch = Stopwatch.StartNew();
-				
 				getFromUrl(_url);
 				
 				stopwatch.Stop();
 				duration[i] = stopwatch.ElapsedMilliseconds;
 			}
-			
 			
 			// 2) Affichage du resultat
 			if (print_avg) {
@@ -79,7 +77,6 @@ namespace nget_v1
 					Console.WriteLine(i + " => " + duration[i] + " ms");
 				}
 			}
-			
 		}
 
 		void print_avg(long[] duration, int nb_loads)
