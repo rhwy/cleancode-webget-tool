@@ -13,6 +13,33 @@ using System.Diagnostics;
 namespace nget
 	
 {
+	public interface IGetSave{
+		string isGettSave(string[] args);
+	}
+	public class isGetSaveClass :IGetSave {
+		public string isGettSave(string[] args){
+			string res=string.Empty;
+			if(string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
+				res="Les paramétre de commande Get save Invalide";
+			}else{
+				string path=args[4];
+				string sURL=args[2];
+				WebClient client=new WebClient();
+				string value =client.DownloadString(sURL);
+				
+				if(!File.Exists(path)){
+					appendallText app = new appendallText();
+					app.appendAllText(args[4],value);
+					
+					
+					
+				}
+				res="creation de fichier valide";
+			}
+			return res;
+			
+		}
+	}
 	public interface ITestTime{
 		string isTesterTime(int n,string s);
 	}
@@ -75,7 +102,8 @@ namespace nget
 					resultat="les parmamétres de get Erronées";
 					
 				}else{
-					isGetSave(args);
+					isGetSaveClass gsc = new isGetSaveClass();
+					resultat=gsc.isGettSave(args);
 				}
 			}
 			return resultat;
@@ -121,25 +149,7 @@ namespace nget
 			return isValid;
 			
 		}
-		void isGetSave(string[] args){
-			if(string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
-				resultat="Les paramétre de commande Get save Invalide";
-			}else{
-				string path=args[4];
-				string sURL=args[2];
-				WebClient client=new WebClient();
-				string value =client.DownloadString(sURL);
-				
-				if(!File.Exists(path)){
-					appendallText app = new appendallText();
-					app.appendAllText(args[4],value);
-					
-					
-					
-				}
-				resultat="creation de fichier valide";
-			}
-		}
+		
 		
 	}
 
