@@ -13,6 +13,24 @@ using System.Diagnostics;
 namespace nget
 	
 {
+	public interface ITestTime{
+		string isTesterTime(int n,string s);
+	}
+	public class isTestTime : ITestTime{
+		public string isTesterTime(int numE,string sURL){
+			string res=string.Empty;
+			int i=0;
+			while(i<numE){
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				WebClient client=new WebClient();
+				string value =client.DownloadString(sURL);
+				stopwatch.Stop();
+				i++;
+				res+="le chargement N° :"+i+":"+stopwatch.Elapsed.TotalMilliseconds +" ms\n" ;
+			}
+			return res;
+		}
+	}
 	
 	public class ngetv2
 	{
@@ -20,41 +38,31 @@ namespace nget
 		public static string CMD_GET ="GET";
 		public static int NB_ARG_TEST =4;
 		public static int NB_ARG_GET =2;
-		
+		string resultat=string.Empty;
 		public ngetv2(string [] args)
 		{
 			if (args.Length==0){
 				Console.WriteLine("requete vide");
 			}
 			else{
-				/**
-				 *Tester Si la commande est get , test ou autre
-				 * 
-				 */
-				if (args[0].Equals("get")){
-					Console.WriteLine(ArgIsGet(args));
-					/*
-					 Tester Si la commande est Test
-					 */
-				}else if(args[0].Equals("test")){
-					Console.WriteLine(	ArgIsTest(args));
-				}else{
-					Console.WriteLine("Commande Invalide");
+				switch (args[0]) {
+					case "get":
+						Console.WriteLine(ArgIsGet(args));
+						break;
+					case "test":
+						Console.WriteLine(ArgIsTest(args));
+						break;
+						default :
+							Console.WriteLine("Commande Invalide");
+						break;
 				}
 			}
 		}
 		
 		string ArgIsGet(string[] args){
-			string resultat= string.Empty;
-			/*
-					 tester Si la commande get a de paramétres
-			 */
 			if(isNotValidArgs(args,CMD_GET)){
 				resultat="paramétres de commande Get Invalide";
-				/*
-					 tester Si la commande get a de 2 paramétres
-					 exepmle : get -url "aa"
-				 */
+				
 			}else{
 				if(args.Length==3 && args[1].Equals("-url")) {
 					string sURL=args[2];
@@ -67,48 +75,26 @@ namespace nget
 					resultat="les parmamétres de get Erronées";
 					
 				}else{
-					if(string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
-						resultat="Les paramétre de commande Get save Invalide";
-					}else{
-						string path=args[4];
-						string sURL=args[2];
-						WebClient client=new WebClient();
-						string value =client.DownloadString(sURL);
-						
-						if(!File.Exists(path)){
-							appendallText app = new appendallText();
-							app.appendAllText(args[4],value);
-							
-							
-							
-						}
-						resultat="creation de fichier valide";
-					}
+					isGetSave(args);
 				}
 			}
 			return resultat;
 		}
 		
 		string ArgIsTest(string[] args){
-			string resultat=string.Empty;
 			
-			resultat="Test";
+			resultat="Test : \n";
 			if(isNotValidArgs(args,CMD_TEST)){
 				resultat="Les paramétre de commande Test Invalide";
 			}else if(args.Length==5){
 				if( args[1].Equals("-url")&args[3].Equals("-times")){
 					int numEssai=int.Parse(args[4]);
-					int i=0;
+					
 					string sURL=args[2];
 					if(int.Parse(args[4])>0){
-						while(i<numEssai){
-							Stopwatch stopwatch = Stopwatch.StartNew();
-							WebClient client=new WebClient();
-							string value =client.DownloadString(sURL);
-							stopwatch.Stop();
-							i++;
-							resultat="le chargement N° :"+i+":"+stopwatch.Elapsed.TotalMilliseconds +" ms" ;
-						}
+						isTestTime t = new isTestTime();
+						resultat=t.isTesterTime(numEssai,sURL);
+						
 					}else{
 						resultat="Le nombre doit être positive";
 					}
@@ -132,11 +118,29 @@ namespace nget
 							isValid=true;
 			}
 			
-			
-			
 			return isValid;
 			
 		}
+		void isGetSave(string[] args){
+			if(string.IsNullOrEmpty(args[3])|string.IsNullOrEmpty(args[4])){
+				resultat="Les paramétre de commande Get save Invalide";
+			}else{
+				string path=args[4];
+				string sURL=args[2];
+				WebClient client=new WebClient();
+				string value =client.DownloadString(sURL);
+				
+				if(!File.Exists(path)){
+					appendallText app = new appendallText();
+					app.appendAllText(args[4],value);
+					
+					
+					
+				}
+				resultat="creation de fichier valide";
+			}
+		}
+		
 	}
-	
+
 }
