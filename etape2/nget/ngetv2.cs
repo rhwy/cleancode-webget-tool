@@ -16,6 +16,11 @@ namespace nget
 	
 	public class ngetv2
 	{
+		public static string CMD_TEST ="TEST";
+		public static string CMD_GET ="GET";
+		public static int NB_ARG_TEST =4;
+		public static int NB_ARG_GET =2;
+		
 		public ngetv2(string [] args)
 		{
 			if (args.Length==0){
@@ -27,13 +32,12 @@ namespace nget
 				 * 
 				 */
 				if (args[0].Equals("get")){
-					ArgIsGet(args);
+					Console.WriteLine(ArgIsGet(args));
 					/*
 					 Tester Si la commande est Test
 					 */
 				}else if(args[0].Equals("test")){
-					
-					ArgIsTest(args);
+					Console.WriteLine(	ArgIsTest(args));
 				}else{
 					Console.WriteLine("Commande Invalide");
 				}
@@ -45,7 +49,7 @@ namespace nget
 			/*
 					 tester Si la commande get a de paramétres
 			 */
-			if(isValidArgs(args[1],args[2])){
+			if(isNotValidArgs(args,CMD_GET)){
 				resultat="paramétres de commande Get Invalide";
 				/*
 					 tester Si la commande get a de 2 paramétres
@@ -89,32 +93,47 @@ namespace nget
 			string resultat=string.Empty;
 			
 			resultat="Test";
-			if(isValidArgs(args[1],args[2],args[3],args[4])){
+			if(isNotValidArgs(args,CMD_TEST)){
 				resultat="Les paramétre de commande Test Invalide";
-			}else if(args.Length==5 & args[1].Equals("-url")&args[3].Equals("-times")){
-				int numEssai=int.Parse(args[4]);
-				int i=0;
-				string sURL=args[2];
-				if(int.Parse(args[4])>0){
-					while(i<numEssai){
-						Stopwatch stopwatch = Stopwatch.StartNew();
-						WebClient client=new WebClient();
-						string value =client.DownloadString(sURL);
-						stopwatch.Stop();
-						i++;
-						resultat="le chargement N° :"+i+":"+stopwatch.Elapsed.TotalMilliseconds +" ms" ;
+			}else if(args.Length==5){
+				if( args[1].Equals("-url")&args[3].Equals("-times")){
+					int numEssai=int.Parse(args[4]);
+					int i=0;
+					string sURL=args[2];
+					if(int.Parse(args[4])>0){
+						while(i<numEssai){
+							Stopwatch stopwatch = Stopwatch.StartNew();
+							WebClient client=new WebClient();
+							string value =client.DownloadString(sURL);
+							stopwatch.Stop();
+							i++;
+							resultat="le chargement N° :"+i+":"+stopwatch.Elapsed.TotalMilliseconds +" ms" ;
+						}
+					}else{
+						resultat="Le nombre doit être positive";
 					}
-				}else{
-					resultat="Le nombre doit être positive";
 				}
-			}
+			}else
+				resultat= "Test invalid";
+			
 			return resultat;
 		}
-		bool isValidArgs(params string[] Args){
+		bool isNotValidArgs(string[] Args,string typeCom){
 			bool isValid = false;
-			foreach (var arg in Args)
-				if(string.IsNullOrEmpty(arg))
-					isValid=true;
+			if(typeCom.Equals(CMD_TEST)){
+				if(Args.Length==NB_ARG_TEST+1)
+					for (int i = 0; i < NB_ARG_TEST; i++)
+						if(string.IsNullOrEmpty(Args[i+1]))
+							isValid=true;
+			}else {
+				if(Args.Length==NB_ARG_GET)
+					for (int i = 0; i < NB_ARG_GET; i++)
+						if(string.IsNullOrEmpty(Args[i+1]))
+							isValid=true;
+			}
+			
+			
+			
 			return isValid;
 			
 		}
