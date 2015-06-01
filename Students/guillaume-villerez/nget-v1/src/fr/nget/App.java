@@ -40,10 +40,10 @@ public class App {
 		
 		// Performs the operation
 		try {
-			if(options.getTestTime() <= 0)
-				readURL(url, options);
-			else
+			if(options.isTestMode())
 				testURL(url, options);
+			else
+				readURL(url, options);
 		} catch (IOException e) {
 			System.out.println("[x] Error : io exception during request : " + e.getMessage());
 			System.exit(1);

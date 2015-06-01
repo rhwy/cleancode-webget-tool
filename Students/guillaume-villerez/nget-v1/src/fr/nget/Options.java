@@ -7,6 +7,7 @@ package fr.nget;
  *
  */
 public class Options {
+	private boolean testMode = false; // Mode
 	private String filename = null;   // Filename
 	private int testTime = 0;         // Number of test, 0 means no tests to performs
 	private boolean average = false;  // In test mode, only show average response time
@@ -55,7 +56,10 @@ public class Options {
 				i++;
 				break;
 			case "get":
+				testMode = false;
+				break;
 			case "test":
+				testMode = true;
 				break;
 			default:
 				System.out.println("[x] Warning : ignored argument : " + args[i]);
@@ -68,31 +72,19 @@ public class Options {
 		return filename;
 	}
 
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
 	public int getTestTime() {
 		return testTime;
-	}
-
-	public void setTestTime(int testTime) {
-		this.testTime = testTime;
 	}
 
 	public boolean isAverage() {
 		return average;
 	}
-
-	public void setAverage(boolean average) {
-		this.average = average;
-	}
-
 	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public boolean isTestMode() {
+		return testMode;
 	}
+	
 }
