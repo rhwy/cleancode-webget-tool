@@ -54,8 +54,11 @@ public class Options {
 				}
 				i++;
 				break;
-				default:
-					System.out.println("[x] Warning : ignored argument : " + args[i]);
+			case "get":
+			case "test":
+				break;
+			default:
+				System.out.println("[x] Warning : ignored argument : " + args[i]);
 			}
 		}
 		
