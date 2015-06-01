@@ -31,7 +31,10 @@ Voici l'ensemble des options disponibles dans l'application:
 
 ## Etape 1
 
-1. Forkez ce repository
+Nom : Cathelineau
+Florian : Florian
+
+1. Forkez ce repository FAIT !
 
 1. Créez un répertoire `Students\nom-prenom\nget-v1` dans votre repository projet github.
 
