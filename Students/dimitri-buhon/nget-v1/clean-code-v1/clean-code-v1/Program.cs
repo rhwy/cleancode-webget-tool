@@ -47,7 +47,7 @@ namespace clean_code_v1
                     {
                         for (int i = 0; i < nbLoop; i++)
                         {
-                            Console.Write("Loop " + (i+1) + " :");
+                            Console.Write("Loop " + (i + 1) + " :");
                             stopwatch = new Stopwatch();
                             stopwatch.Start();
 
@@ -59,38 +59,38 @@ namespace clean_code_v1
                         }
                     }
                 }
+            }
 
                 // Six arguments                
-                else if (args.Length == 6)
+            else if (args.Length == 6)
+            {
+                // prog.exe test -url "myUrl" -times 5 -avg
+                if (args[0] == "test" && args[1] == "-url" && args[3] == "-times" && args[5] == "-avg")
                 {
-                    // prog.exe test -url "myUrl" -times 5 -avg
-                    if (args[0] == "test" && args[1] == "-url" && args[3] == "-times" && args[5] == "-avg")
+                    double sum;
+                    int nbLoop;
+                    bool isNumeric = int.TryParse(args[4], out nbLoop);
+
+                    if (isNumeric)
                     {
-                        double sum;
-                        int nbLoop;
-                        bool isNumeric = int.TryParse(args[4], out nbLoop);
-
-                        if (isNumeric)
+                        sum = 0;
+                        for (int i = 0; i < nbLoop; i++)
                         {
-                            sum = 0;
-                            for (int i = 0; i < nbLoop; i++)
-                            {
-                                stopwatch = new Stopwatch();
-                                stopwatch.Start();
+                            stopwatch = new Stopwatch();
+                            stopwatch.Start();
 
-                                NgetTools.getInstance.getWebContent(args[2]);
+                            NgetTools.getInstance.getWebContent(args[2]);
 
-                                stopwatch.Stop();
-                                ts = stopwatch.Elapsed;
-                                sum += ts.Milliseconds;
-                            }
-                            Console.WriteLine("Time for " + nbLoop + " loop(s) : " + sum / nbLoop + "ms");
+                            stopwatch.Stop();
+                            ts = stopwatch.Elapsed;
+                            sum += ts.Milliseconds;
                         }
+                        Console.WriteLine("Time for " + nbLoop + " loop(s) : " + (sum / nbLoop) + "ms");
                     }
                 }
-                Console.Write("\nType something ...");
-                Console.ReadLine();
             }
+            Console.Write("\nType something ...");
+            Console.ReadLine();
         }
-    }
+    }     
 }
