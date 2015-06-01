@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace clean_code_v1
+namespace nget
 {
     class Program
     {

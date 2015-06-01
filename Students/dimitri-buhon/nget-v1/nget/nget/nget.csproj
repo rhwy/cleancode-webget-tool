@@ -7,8 +7,8 @@
     <ProjectGuid>{8494EB5F-5EF7-4FC9-B671-626FD3CE9F71}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>clean_code_v1</RootNamespace>
-    <AssemblyName>clean-code-v1</AssemblyName>
+    <RootNamespace>nget</RootNamespace>
+    <AssemblyName>nget</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

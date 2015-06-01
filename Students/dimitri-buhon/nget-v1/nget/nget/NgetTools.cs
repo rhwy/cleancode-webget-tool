@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace clean_code_v1
+namespace nget
 {
     public class NgetTools
     {
