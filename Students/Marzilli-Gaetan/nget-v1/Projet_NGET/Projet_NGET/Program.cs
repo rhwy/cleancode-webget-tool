@@ -12,9 +12,10 @@ namespace Projet_NGET
 {
     class Program
     {
-        /*
-         * Main de l'application
-         */
+        /// <summary>
+        /// Main de l'application
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             if (args != null)
@@ -68,10 +69,10 @@ namespace Projet_NGET
 
         }
 
-        /*
-         * Affichage du contenu d'une page web.
-         * @param : uneURL
-         */
+        /// <summary>
+        /// Affichage du contenu d'une page web.
+        /// </summary>
+        /// <param name="uneURL"></param>
         public static void AfficherPageWeb(string uneURL)
         {
             WebClient client = new WebClient();
@@ -80,13 +81,12 @@ namespace Projet_NGET
             Console.WriteLine(contenuPage);
         }
 
-        /*
-         * Affichage du contenu d'une page web.
-         * @param : uneURL
-         * @param : nbChargement
-         * @param : moyenne
-         * @return : time
-         */
+        /// <summary>
+        /// Affichage du contenu d'une page web.
+        /// </summary>
+        /// <param name="uneURL"></param>
+        /// <param name="nbChargement"></param>
+        /// <param name="moyenne"></param>
         public static void AfficherPageWebAvecTimer(string uneURL, int nbChargement, int moyenne)
         {
             var tempsTotal = new List<string>();
@@ -118,11 +118,11 @@ namespace Projet_NGET
    
         }
 
-        /*
-         * Retourne le contenu d'une page web en format string.
-         * @param : uneURL
-         * @return : contenuPage
-         */
+        /// <summary>
+        /// Retourne le contenu d'une page web en format string.
+        /// </summary>
+        /// <param name="uneURL"></param>
+        /// <returns name="contenuPage"></returns>
         public static string ContenuPageWeb(string uneURL)
         {
             WebClient client = new WebClient();
@@ -130,11 +130,11 @@ namespace Projet_NGET
             return contenuPage;
         }
 
-        /*
-         * Sauvegarde le contenu de la page web dans un fichier.
-         * @param : unPatch
-         * @param : contenuSite
-         */
+        /// <summary>
+        /// Sauvegarde le contenu de la page web dans un fichier.
+        /// </summary>
+        /// <param name="unPatch"></param>
+        /// <param name="contenuSite"></param>
         public static void SauvegardeFichier(string unPatch, string contenuSite)
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + unPatch, true))
