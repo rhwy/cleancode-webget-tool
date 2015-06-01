@@ -15,6 +15,8 @@ namespace clean_code_v1
             Stopwatch stopwatch;
             TimeSpan ts;
 
+            //Options myArgs = new Options(args);
+
             // Trois arguments
             if (args.Length == 3)
             {
@@ -61,7 +63,7 @@ namespace clean_code_v1
                 }
             }
 
-                // Six arguments                
+            // Six arguments                
             else if (args.Length == 6)
             {
                 // prog.exe test -url "myUrl" -times 5 -avg
