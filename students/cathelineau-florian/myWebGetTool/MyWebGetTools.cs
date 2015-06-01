@@ -21,16 +21,32 @@ namespace myWebGetTool
         public MyWebGetTools(string[] args)
         {
             this.arguments = args;
+            this.options = new Dictionary<string, string>();
+            foreach (string a in args)
+                Console.WriteLine(a);
+
         }
 
-        public Stream getUrlContent(string url)
+        public void run()
+        {
+            if (this.verifyArguments() == true)
+            {
+                Console.WriteLine(this.getUrlContent(this.options["url"]));
+            }
+        }
+
+        public StreamReader getUrlContent(string url)
         {
             try
             {
                 WebRequest req = WebRequest.Create(url);
-                Stream objStream;
-                objStream = req.GetResponse().GetResponseStream();
-                return objStream;
+                Stream objStream = req.GetResponse().GetResponseStream();
+                StreamReader sr = new StreamReader(objStream);
+                objStream.Dispose();
+                sr.Dispose();
+                return sr;
+
+                
             }
             catch (Exception ex)
             { 
@@ -40,10 +56,14 @@ namespace myWebGetTool
         
         public Boolean verifyArguments()
         {
+
+            //test
+            //Console.WriteLine(arguments[0]);
+
             // 1st Arg : commandType (Get or Test)
-            if (arguments[1] == "test" || arguments[1] == "get")
+            if (arguments[0] == "test" || arguments[0] == "get")
             {
-                this.commandType = arguments[1];
+                this.commandType = arguments[0];
             }
             else
             {
@@ -52,20 +72,26 @@ namespace myWebGetTool
                 return false;
             }
 
-            //2nd and 3rd args must be urls
-            if (arguments[2] == "-url" && arguments[3].Substring(0, 7) == "http://")
-            {
-                this.options.Add("url", arguments[3]);
-            }
+            Console.WriteLine("PREMIER TEST PASSE");
 
-            for (int i = 4; i < arguments.Length; i++)
+            //2nd and 3rd args must be urls
+            if (arguments[1] == "-url")// && arguments[2].Substring(0, 7) == "http://")
+            {
+                this.options.Add("url", arguments[2]);
+            }
+            else
+                return false;
+
+            Console.WriteLine("DEUXIEME TEST PASSE");
+            /*
+            for (int i = 3; i < arguments.Length; i++)
             {
                 if ((i + 1) < arguments.Length && isKeyValid(arguments[i]) == true)
                 {
                     this.options.Add(arguments[i], arguments[i + 1]);
                 }
             }
-
+            */
             return true;
         }
 
@@ -83,14 +109,6 @@ namespace myWebGetTool
         {
             Console.WriteLine("Error : " + this.errorMessage);
             this.errorMessage = "";
-        }
-
-        public void run()
-        {
-            if (this.verifyArguments() == true)
-            {
-                Console.WriteLine(this.getUrlContent(this.options["url"]));
-            }
         }
 
         public void writeFile(Stream s)
