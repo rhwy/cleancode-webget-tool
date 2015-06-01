@@ -59,6 +59,7 @@ namespace wget
             Console.WriteLine("command test : ");
             Console.WriteLine(" -url yourURL -times nbTimes");
             Console.WriteLine(" -url yourURL -times nbTimes -avg");
+            Console.WriteLine("command exit, qui ou q pour quitter");
         }
 
         public void testGetCommand(int len, string option, string url, string save, string file, string avg)
