@@ -8,15 +8,49 @@ namespace clean_code_v1
 {
     public class Options
     {
-        private String filename = null;
-        private String url = null;
-        private int testLoops = 0;
-        private bool testAverage = false;
-
-        public String Filename
+        private String commandType;
+        private String destinationFilename;
+        private String url;
+        private int nbLoops = 0;
+        private bool isAverage = false;
+        
+        public Options(string[] args)
         {
-            get { return filename; }
-            set { filename = value; }
+            if (args.Length < 2) return;
+
+            commandType = args[0];  
+            for(int i = 1; i < args.Length; i++) {
+                switch (args[i])
+                {
+                    case "-url" :
+                        url = (args.Length > i) ? args[i + 1] : null;
+                        break;
+                    case "-save" :
+                        destinationFilename = (args.Length > i) ? args[i + 1] : null;
+                        break;
+                    case "-times" :
+                        String str_nbLoops = (args.Length > i) ? args[i + 1] : null;
+                        if (str_nbLoops != null)
+                            int.TryParse(str_nbLoops, out nbLoops);
+                        break;
+                    case "-avg":
+                        isAverage = true;
+                        break;
+                }
+            }
+        }
+
+        // Getters and Setters
+        public String CommandType
+        {
+            get { return commandType; }
+            set { commandType = value; }
+        }
+
+        public String DestinationFilename
+        {
+            get { return destinationFilename; }
+            set { destinationFilename = value; }
         }
 
         public String Url
@@ -24,39 +58,17 @@ namespace clean_code_v1
             get { return url; }
             set { url = value; }
         }
-        
-        public int TestLoops
+
+        public int NbLoops
         {
-            get { return testLoops; }
-            set { testLoops = value; }
+            get { return nbLoops; }
+            set { nbLoops = value; }
         }
-        
-        public bool TestAverage
+
+        public bool IsAverage
         {
-            get { return testAverage; }
-            set { testAverage = value; }
-        }
-        
-        public Options(string[] args)
-        {            
-            for(int i = 0; i < args.Length; i++) {
-                String value = (args[i + 1] == null ? null : args[i + 1]);
-                switch (args[i])
-                {
-                    case "-url" :
-                        url = value;
-                        break;
-                    case "-save" :
-                        filename = value;
-                        break;
-                    case "-times" :
-                        int.TryParse(args[4], out testLoops);
-                        break;
-                    case "-avg":
-                        testAverage = true;
-                        break;
-                }
-            }
+            get { return isAverage; }
+            set { isAverage = value; }
         }
     }
 }
