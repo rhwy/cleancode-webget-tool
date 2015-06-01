@@ -89,7 +89,6 @@ namespace Projet_NGET
         /// <param name="moyenne"></param>
         public static void AfficherPageWebAvecTimer(string uneURL, int nbChargement, int moyenne)
         {
-            var tempsTotal = new List<string>();
             int timer = 0;
 
             for (int i = 0; i < nbChargement; i++)
@@ -102,13 +101,12 @@ namespace Projet_NGET
 
                 DateTime end = DateTime.Now;
 
-                TimeSpan time = (end - start);
-                tempsTotal.Add(time.Milliseconds.ToString());            
-         
+
+                TimeSpan time = (end - start);      
                 Console.WriteLine(time.Milliseconds.ToString() + " ms");
 
                 timer += int.Parse(time.Milliseconds.ToString());
-                Console.WriteLine(timer / nbChargement);
+     
                 if (moyenne == 1 && i == nbChargement - 1)
                 {
                     System.Console.WriteLine("Moyenne : ", timer / nbChargement + " ms.");
