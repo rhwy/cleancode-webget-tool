@@ -10,8 +10,6 @@ namespace nget
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
-			
 			Console.WriteLine(args.Length);
 			
 			if (args.Length == 0)
@@ -32,7 +30,7 @@ namespace nget
 				
 				var result = getUrl(url);
 				
-				// Si -save <path> valide, on sauvegarde sur fichier, sinon on sort en console
+				// if -save <path> is valid, we save in file, else print on console
 				if (fileOutput != null) {
 					saveFile(fileOutput, result);	
 				} else {
@@ -56,7 +54,7 @@ namespace nget
 				}
 				
 				if (args.Contains("-avg")) {
-					Console.WriteLine("average: " + computeAvg(samples));
+					Console.WriteLine("average: " + computeAvg(samples) + "ms");
 				} else {
 					printTimes(samples);
 				}
