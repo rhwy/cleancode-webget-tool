@@ -44,3 +44,4 @@ Voici l'ensemble des options disponibles dans l'application:
 
 _**Note**_: exemple d'url de test avec du vrai contenu : `http://api.openweathermap.org/data/2.5/weather?q=paris&units=metric`
 
+/
