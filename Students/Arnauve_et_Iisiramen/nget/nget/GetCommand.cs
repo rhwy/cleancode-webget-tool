@@ -7,11 +7,9 @@ namespace nget
 {
     class GetCommand : IParseCommand
     {
-        private IExecuteCommand exec;
         Dictionary<string, string> dico = new Dictionary<string, string>();
-        public GetCommand(IExecuteCommand e)
+        public GetCommand()
         {
-            exec = e;
         }
 
         private void parse(string[] command)

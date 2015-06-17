@@ -9,17 +9,16 @@ namespace nget
     {
         static void Main(string[] args)
         {
-            IExecuteCommand ec = new IExecuteCommand();
             IParseCommand command;
             Console.WriteLine(args[0]);
             switch (args[0])
             {
                 case "get":
-                    command = new GetCommand(ec);
+                    command = new GetCommand();
                     command.execute(args);
                     break;
                 case "test":
-                    command = new GetCommand(ec);
+                    command = new TestCommand();
                     command.execute(args);
                     break;
             }

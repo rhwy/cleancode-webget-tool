@@ -7,12 +7,10 @@ namespace nget
 {
     class TestCommand
     {
-        private IExecuteCommand exec;
         Dictionary<string, string> dico = new Dictionary<string, string>();
 
-        public TestCommand(IExecuteCommand e)
+        public TestCommand()
         {
-            exec = e;
         }
 
         private void parse(string[] command)
@@ -31,7 +29,6 @@ namespace nget
         public void execute(string[] command)
         {
             parse(command);
-            exec.execute("test", dico);
         }
     }
 }
