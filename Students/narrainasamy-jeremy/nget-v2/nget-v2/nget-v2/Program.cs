@@ -17,39 +17,26 @@ namespace nget_v2
 {
 	class Program
 	{
+		
 		public static void Main(string[] args)
 		{
-			
+	
 			try{
-				switch(args.Length){
-						
-					case 3:
-						if(args[0] == "get" && args[1] == "-url"){ Console.WriteLine(getContenuUrl(args[2])); return;}
-						break;
-						
-					case 5:
-						if(args[0] == "get" && args[1] == "-url" && args[3] == "-save"){ System.IO.File.WriteAllText(args[4],getContenuUrl(args[2])); return;}
-						
-						if(args[0] == "test" && args[1] == "-url" && args[3] == "-times"){
-							getChargementUrl(args[2], int.Parse(args[4]), false);
-							return;
-						}
-						break;
-						
-					case 6:
-						if(args[0] == "test" && args[1] == "-url" && args[3] == "-times" && args[5] == "-avg"){
-							getChargementUrl(args[2], int.Parse(args[4]), true);
-							return;
-						}
-						break;
+				
+				if(args[0].Equals("get")){
+					
+					if(args.Contains("-url") && args.Contains("-save")){ System.IO.File.WriteAllText(args[4],getContenuUrl(args[2])); return;}
+					if(args.Contains("-url")){ Console.WriteLine(getContenuUrl(args[2])); return;}
+				}
+				
+				if(args[0].Equals("test")){
+					if(args.Contains("-url") && args.Contains("-times") && args.Contains("-avg")){ getChargementUrl(args[2], int.Parse(args[4]), true); return;}
+					if(args.Contains("-url") && args.Contains("-times")){ getChargementUrl(args[2], int.Parse(args[4]), false); return;}
 				}
 						
 			}catch(Exception e){
 				Console.WriteLine("Une erreur est survenue : " + e);
 			}
-									
-			Console.Write("Press any key to exit . . . ");
-			Console.ReadKey(true);
 			
 		}
 		
