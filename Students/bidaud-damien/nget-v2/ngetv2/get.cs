@@ -28,7 +28,6 @@ namespace ngetv2
                 string data = Connection.getData(url);
                 if (Argument.Length == 2)
                 {
-                    //on affiche
                     Console.WriteLine(data);
                 }
                 else if (Argument.Length > 2)
@@ -37,7 +36,6 @@ namespace ngetv2
                     {
                         try
                         {
-                            //on sauvegarde
                             File.WriteAllText(Argument[3], data);
                             Console.WriteLine("Fichier sauvegarder!");
                         }

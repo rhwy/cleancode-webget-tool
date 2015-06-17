@@ -12,8 +12,6 @@ namespace ngetv2
 
         string[] Argument { get; set; }
         WebConnection Connection { get; set; }
-
-
         void execute();
         
     }

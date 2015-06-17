@@ -46,6 +46,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="test.cs" />
+    <Compile Include="WebConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
