@@ -18,29 +18,29 @@ namespace ngetv2
 
         public void execute()
         {
-            string url = Argument[2];
+            string url = Argument[1];
             WebClient client = new WebClient();
             try
             {
                 string data = client.DownloadString(url);
-                if (Argument.Length == 3)
+                if (Argument.Length == 2)
                 {
                     //on affiche
                     Console.WriteLine(data);
                 }
-                else if (Argument.Length > 3)
+                else if (Argument.Length > 2)
                 {
-                    if (Argument[3] == "-save")
+                    if (Argument[2] == "-save")
                     {
                         try
                         {
                             //on sauvegarde
-                            File.WriteAllText(Argument[4], data);
+                            File.WriteAllText(Argument[3], data);
                             Console.WriteLine("Fichier sauvegarder!");
                         }
                         catch (UnauthorizedAccessException)
                         {
-                            Console.WriteLine("Vous ne posséder pas les droits pour sauvegarder un ficher {0}", Argument[4]);
+                            Console.WriteLine("Vous ne posséder pas les droits pour sauvegarder un ficher {0}", Argument[3]);
                         }
                     }
                 }

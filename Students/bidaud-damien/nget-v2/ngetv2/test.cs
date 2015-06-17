@@ -18,12 +18,12 @@ namespace ngetv2
 
         public void execute()
         {
-            string url = args[2];
-            int nb = int.Parse(args[4]);
+            string url = Argument[1];
+            int nb = int.Parse(Argument[3]);
             bool avg = false;
             int somme = 0;
             //on vérifie si on veut la moyenne
-            if (args.Length > 5 && args[5] == "-avg")
+            if (Argument.Length > 4 && Argument[4] == "-avg")
             {
                 avg = true;
             }

@@ -27,6 +27,7 @@ namespace ngetv2
                     argument[i - 1] = args[i];
                 }
                 argumentManager.Argument = argument;
+                argumentManager.execute();
 
             }
             Console.Write("Press any key to continue . . . ");
