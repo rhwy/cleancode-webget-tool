@@ -32,7 +32,7 @@ namespace ngetv2
                 }
                 else if (Argument.Length > 2)
                 {
-                    if (Argument[2] == "-save")
+                    if (Array.Find(Argument, findSave)!=null)
                     {
                         try
                         {
@@ -50,6 +50,12 @@ namespace ngetv2
             {
                 Console.WriteLine("L'adresse n'est pas correct");
             }
+        }
+
+
+        public bool findSave(string element)
+        {
+            return element == "-save";
         }
     }
 }
