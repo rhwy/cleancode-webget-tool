@@ -1,5 +1,5 @@
 package fr.egor
 
-class GetCommand {
-
+case class GetCommand(url: String, options: Map[String, String]) {
 }
+

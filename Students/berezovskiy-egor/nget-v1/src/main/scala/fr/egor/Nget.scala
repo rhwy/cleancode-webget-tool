@@ -3,14 +3,13 @@ package fr.egor
 import java.io.File
 import java.net.{MalformedURLException, URL}
 import java.nio.charset.MalformedInputException
-import scala.sys.process._
 
 import scala.io.Source
 
+import scala.sys.process._
+
 object Nget {
-
-  def main(args: Array[String]): Unit = args match {
-
+  def apply(args: Array[String]): Unit = args match {
     case Array("get", "-url", url) => get(url) match {
       case Some(result) => result.foreach(println)
       case None => println("Error")
@@ -76,16 +75,15 @@ object Nget {
       connection.setUseCaches(false)
       val is = connection.getInputStream
       val res = Source.fromInputStream(is)(io.Codec("UTF-8")).getLines()
-      is.close()
+      //is.close()
       Some(res)
     } catch {
-      case e:MalformedInputException =>
+      case e: MalformedInputException =>
         println(Console.RED + e.getMessage)
         None
-      case e:MalformedURLException =>
+      case e: MalformedURLException =>
         println(Console.RED + e.getMessage)
         None
     }
   }
-
 }
