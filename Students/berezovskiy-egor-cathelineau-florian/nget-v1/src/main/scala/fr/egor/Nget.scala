@@ -3,33 +3,32 @@ package fr.egor
 import java.io.File
 import java.net.{MalformedURLException, URL}
 import java.nio.charset.MalformedInputException
-
 import scala.io.Source
-
 import scala.sys.process._
 
 object Nget {
-  def apply(args: Array[String]): Unit = args match {
-    case Array("get", "-url", url) => get(url) match {
-      case Some(result) => result.foreach(println)
-      case None => println("Error")
-    }
+  def apply(config: Config): Unit = config match {
 
-    case Array("get", "-url", url, "-save", path) =>
+    case Config("test", url, _, number, true) =>
+      println(testAvg(url, number.toString))
+    
+    case Config("test", url, _, number, false) =>
+      testUrlConnections(url, number.toString)
+    
+    case Config("get", url, path, 0, _) =>
       try {
         new URL(url) #> new File(path) !
       } catch {
         case e: Exception => println(e.getMessage)
       }
 
-    case Array("test", "-url", url, "-times", number) =>
-      testUrlConnections(url, number)
-
-    case Array("test", "-url", url, "-times", number, "-avg") =>
-      println(testAvg(url, number))
+    case Config("get", url, _, _, _) => get(url) match {
+      case Some(result) => result.foreach(println)
+      case None => println("Error")
+    }
 
     case _ =>
-      println("Wrong args number: Usage: nget methode -url 'url'")
+      println("Wrong args")
   }
 
   def testAvg(url: String, number: String): Long = {
