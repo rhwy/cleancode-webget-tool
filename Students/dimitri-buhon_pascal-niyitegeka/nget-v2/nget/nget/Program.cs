@@ -33,7 +33,7 @@ namespace nget
                 {
                     Console.WriteLine(webContent);
                 }
-                // Get web content and save it in a file
+                // Save web content in a file
                 else
                 {
                     bool isSaved = NgetTools.getInstance.save(webContent, options.DestinationFilename);
@@ -74,7 +74,7 @@ namespace nget
                         ts = stopwatch.Elapsed;
                         sum += ts.Milliseconds;
                     }
-                    Console.WriteLine("Time for " + options.NbLoops + " loop(s) : " + (sum / options.NbLoops) + "ms");
+                    Console.WriteLine("Average time for " + options.NbLoops + " loop(s) : " + (sum / options.NbLoops) + "ms");
                 }
             }
             Console.Write("\nType something to exit...");
