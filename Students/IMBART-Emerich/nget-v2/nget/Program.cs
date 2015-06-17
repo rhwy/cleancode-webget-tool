@@ -17,10 +17,11 @@ namespace nget
 	class Program
 	{
         private static List <string> listeDeCommande = new List<string>(new string[] { "get", "test"});
-        private static List <string> listeArgument = new List<string>(new string[] { "-url", "-save", "-times", "-avg"});
+        private static List <string> listeArgument; 
 
 		public static void Main(string[] args)
 		{
+            listeArgument = new List<string>(args);
             switch (listeDeCommande.IndexOf(args[0]) )
             {
                 case 0 :
@@ -56,20 +57,10 @@ namespace nget
 			Console.ReadKey(true);
 		}
 		
-		    //Fonction de téléchargement de l'URL
-		    private static void download(string URL, string path)
-       	    {
-               var wc = new System.Net.WebClient();
-               try{
-           		    wc.DownloadFile(URL, path);
-               }catch(System.Net.WebException e){
-           	    Console.WriteLine(e.Message);
-               }
-       	    }
-		
 		    //Fonction d'affichage de l'URL
 		    private static void print(String URL, String path ="")
 		    {
+                Console.WriteLine(path);
 			    var wc = new System.Net.WebClient();
 			    try{
            		    if(path == "")
@@ -120,18 +111,40 @@ namespace nget
 
             private static void printMessage(string message)
             {
-
+                
             }
 
             private static void getMethode(string [] args)
             {
-                print(args[listeArgument.IndexOf("-url")+1],args[listeArgument.IndexOf("-save")+1]);	            
+                int arg1,arg2;
+                string path ="";
+
+                arg1 = listeArgument.IndexOf("-url")+1;
+                arg2 = listeArgument.IndexOf("-save")+1;
+
+                if(arg2 > 1) 
+                    path = args[arg2]; 
+
+                print(args[arg1],path);	            
             }
 
             private static void testMethode(string [] args)
             {
+                int compteur,mode = 1;
 
+                if (listeArgument.IndexOf("-avg") > 0)
+                    mode = 1;
+
+                try
+                {
+                    compteur = Convert.ToInt32(args[listeArgument.IndexOf("-times") + 1]);
+                    test(args[listeArgument.IndexOf("-url") + 1], compteur, mode);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-        }
+        
 	}
 }
