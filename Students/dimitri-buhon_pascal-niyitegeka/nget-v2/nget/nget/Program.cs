@@ -14,7 +14,8 @@ namespace nget
 
         static void Main(string[] args)
         {
-            init(args);
+            if (args.Length == 0)
+                return;
 
             ACommand command;
             if (commandDictionary.TryGetValue(args[0], out command))
