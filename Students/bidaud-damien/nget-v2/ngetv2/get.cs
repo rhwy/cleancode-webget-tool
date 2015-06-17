@@ -16,13 +16,16 @@ namespace ngetv2
             set;
         }
 
+        public WebConnection Connection { get; set; }
+
+
         public void execute()
         {
             string url = Argument[1];
-            WebClient client = new WebClient();
+            
             try
             {
-                string data = client.DownloadString(url);
+                string data = Connection.getData(url);
                 if (Argument.Length == 2)
                 {
                     //on affiche

@@ -27,6 +27,7 @@ namespace ngetv2
                     argument[i - 1] = args[i];
                 }
                 argumentManager.Argument = argument;
+                argumentManager.Connection = new WebConnection();
                 argumentManager.execute();
 
             }

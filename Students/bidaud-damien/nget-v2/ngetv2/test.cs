@@ -16,6 +16,8 @@ namespace ngetv2
             set;
         }
 
+        public WebConnection Connection { get; set; }
+
         public void execute()
         {
             string url = Argument[1];
@@ -29,7 +31,7 @@ namespace ngetv2
             }
             for (int i = 0; i < nb; i++)
             {
-                int time = loadTime(url);
+                int time = Connection.loadTime(url);
                 if (!avg)
                 {
                     //on affiche chaque temps de chargement si on ne veut pas la moyenne
@@ -48,25 +50,5 @@ namespace ngetv2
             }
         }
 
-        public int loadTime(string url)
-        {
-           WebClient client = new WebClient();
-           DateTime first, second;
-           try
-           {
-               first = DateTime.Now;
-               string downloadString = client.DownloadString(url);
-               second = DateTime.Now;
-
-               return second.Subtract(first).Milliseconds;
-
-           }
-           catch (WebException e)
-           {
-               Console.WriteLine(e);
-               return 0;
-           }
-       
-       }
-    }
+            }
 }
