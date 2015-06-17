@@ -20,54 +20,34 @@ namespace nget_v2
 		public static void Main(string[] args)
 		{
 			
-			switch(args.Length){
-				case 3:
-					if(args[0] == "get" && args[1] == "-url"){
-						Console.WriteLine(getContenuUrl(args[2]));
-					}else{
-						Console.WriteLine("Une erreur est survenue.");
-					}
-					break;
-					
-				case 5:
-					if(args[0] == "get" && args[1] == "-url" && args[3] == "-save"){
-						System.IO.File.WriteAllText(args[4],getContenuUrl(args[2]));
-					}
-					else if(args[0] == "test" && args[1] == "-url" && args[3] == "-times"){
-						var nbTest = Convert.ToInt32(args[4]);
+			try{
+				switch(args.Length){
 						
-						for(var i = 0; i < nbTest; i++){
-							Console.WriteLine(getChargementUrl(args[2]).TotalSeconds);
+					case 3:
+						if(args[0] == "get" && args[1] == "-url"){ Console.WriteLine(getContenuUrl(args[2])); return;}
+						break;
+						
+					case 5:
+						if(args[0] == "get" && args[1] == "-url" && args[3] == "-save"){ System.IO.File.WriteAllText(args[4],getContenuUrl(args[2])); return;}
+						
+						if(args[0] == "test" && args[1] == "-url" && args[3] == "-times"){
+							getChargementUrl(args[2], int.Parse(args[4]), false);
+							return;
 						}
+						break;
 						
-					}else{
-						Console.WriteLine("Une erreur est survenue.");
-					}
-					break;
-					
-				case 6:
-					if(args[0] == "test" && args[1] == "-url" && args[3] == "-times" && args[5] == "-avg"){
-						
-						var nbTest = Convert.ToInt32(args[4]);
-						var listeTemps = new List<TimeSpan>();
-						
-						for(var i = 0; i < nbTest; i++){
-							listeTemps.Add(getChargementUrl(args[2]));
+					case 6:
+						if(args[0] == "test" && args[1] == "-url" && args[3] == "-times" && args[5] == "-avg"){
+							getChargementUrl(args[2], int.Parse(args[4]), true);
+							return;
 						}
+						break;
+				}
 						
-						var moyenne = TimeSpan.FromSeconds(listeTemps.Average(time=>time.TotalSeconds));
-						Console.WriteLine(moyenne.TotalSeconds);
-						
-					}else{
-						Console.WriteLine("Une erreur est survenue.");
-					}
-					break;
-					
-				default:
-					Console.WriteLine("Une erreur est survenue.");
-					break;
+			}catch(Exception e){
+				Console.WriteLine("Une erreur est survenue : " + e);
 			}
-						
+									
 			Console.Write("Press any key to exit . . . ");
 			Console.ReadKey(true);
 			
@@ -79,16 +59,28 @@ namespace nget_v2
 	        return s;
 		}
 		
-		public static TimeSpan getChargementUrl(String url){
+		public static void getChargementUrl(String url, int nbTest, bool avg){
 			var request = (HttpWebRequest)WebRequest.Create(url);
 			System.Diagnostics.Stopwatch timer = new Stopwatch();
 			
-			timer.Start();
-			var response = (HttpWebResponse)request.GetResponse();
-			timer.Stop();
+			var listeTemps = new List<TimeSpan>();
 			
-			return timer.Elapsed;
+			for(var i = 0; i < nbTest; i++){
+				timer.Start();
+				var response = (HttpWebResponse)request.GetResponse();
+				timer.Stop();
+				
+				if(avg){
+					listeTemps.Add(timer.Elapsed);
+				}else{
+					Console.WriteLine(timer.Elapsed.TotalSeconds);
+				}
+			}
+			
+			if(avg){
+				Console.WriteLine(TimeSpan.FromSeconds(listeTemps.Average(time=>time.TotalSeconds)).TotalSeconds);
+			}
 		}
-		
+	
 	}
 }
