@@ -4,3 +4,6 @@
 
 
 English readme not available at this time, it's only available in [french](readme.fr.md)
+
+Alexandre Fayette
+Guillaume Villerez
