@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -10,69 +11,56 @@ namespace nget_v2
 	/// Description of Test.
 	/// </summary>
 	public class Test: ICommand
-	{
+	{		
+
+		int samplesCount;
+		string url;
+		bool average;
+				
 		public Test()
 		{
 		}
 		
-		public bool match(string arg) {
-			return arg.Equals("test");
+		public string getName()
+		{
+			return "test";
 		}
 		
-		public void execute(string[] args, string url) {
-			// samples count is mandatory
-			string samplesCountString = extractArg(args, "-times");
-			if (samplesCountString == null) {
-				Console.WriteLine("The -times <count> argument is missing");
-				return;
-			}
+		public List<Arg> getArgs()
+		{
+			var list = new List<Arg>();
+			list.Add(new Arg("-times", true, true));
+			list.Add(new Arg("-avg", false, false));
+			list.Add(new Arg("-url", true, true));
+			return list;
+		}
+		
+		public void setValues(Dictionary<string, string> values)
+		{
+			samplesCount = int.Parse(values["-times"]);
+			url = values["-url"];
+			average = values["-avg"] != null ? true : false;
+		}
+
+		public void execute() {
 			
-			int samplesCount = int.Parse(samplesCountString);
 			var samples = new long[samplesCount];
 			
 			for (int i = 0; i < samplesCount; i++) {
-				getUrl(url, ref samples[i]);
+				UrlDownloader.download(url, ref samples[i]);
 			}
 			
-			if (args.Contains("-avg")) {
+			if (average) {
 				Console.WriteLine("average: " + samples.Average() + "ms");
 			} else {
 				printTimes(samples);
 			}
 		}
 		
-		public static string getUrl(string url) {
-			long duration = 0;
-			return getUrl(url, ref duration);
-		}
-			
-		public static string getUrl(string url, ref long duration) {
-			
-			string response = null;
-			var webclient = new WebClient();
-			
-			var chrono = new Stopwatch();
-			chrono.Start();
-			using (webclient) {
-				response = webclient.DownloadString(url);
-			}
-			chrono.Stop();
-			duration = chrono.ElapsedMilliseconds;
-			return response;
-		}
 		private static void printTimes(long[] times) {
 			for (int i = 0; i < times.Length; i++) {
 				Console.WriteLine(times[i]);
 			}
-		}
-		public static string extractArg(string[] args, string argName) {
-
-			int index = Array.IndexOf(args, argName);
-			
-			if (index == -1 || (index + 1 == args.Length))
-				return null;
-			
-			return args[index + 1];
 		}
 	}
 }

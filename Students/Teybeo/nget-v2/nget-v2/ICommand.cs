@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 namespace nget_v2
 {
@@ -8,7 +9,9 @@ namespace nget_v2
 	/// </summary>
 	public interface ICommand
 	{
-		bool match(string arg);
-		void execute(string[] args, string url);
+		string getName();
+		List<Arg> getArgs();
+		void execute();
+		void setValues(Dictionary<string, string> values);
 	}
 }

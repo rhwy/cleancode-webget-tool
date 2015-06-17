@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -11,19 +12,34 @@ namespace nget_v2
 	/// </summary>
 	public class Get: ICommand
 	{
+		string fileOutput;
+		string url;
+		
 		public Get()
 		{
 		}
-		
-		public bool match(string arg) {
-			return arg.Equals("get");
+		public string getName() 
+		{
+			return "get";
 		}
 		
-		public void execute(string[] args, string url) {
-			// save file is optional
-			var fileOutput = extractArg(args, "-save");
+		public List<Arg> getArgs() {
+			var list = new List<Arg>();
+			list.Add(new Arg("-save", false, true));
+			list.Add(new Arg("-url", true, true));
+			return list;
+		}
+		
+		public void setValues(Dictionary<string, string> values) {
 			
-			var result = getUrl(url);			
+			// save file is optional
+			fileOutput = values["-save"];
+			url = values["-url"];
+		}
+		
+		public void execute() {
+
+			var result = UrlDownloader.download(url);			
 
 			// if -save <path> is valid, we save in file, else print on console
 			if (fileOutput != null) {
@@ -32,38 +48,10 @@ namespace nget_v2
 				Console.WriteLine(result);	
 			}
 		}
-		public static string getUrl(string url) {
-			long duration = 0;
-			return getUrl(url, ref duration);
-		}
 			
-		public static string getUrl(string url, ref long duration) {
-			
-			string response = null;
-			var webclient = new WebClient();
-			
-			var chrono = new Stopwatch();
-			chrono.Start();
-			using (webclient) {
-				response = webclient.DownloadString(url);
-			}
-			chrono.Stop();
-			duration = chrono.ElapsedMilliseconds;
-			return response;
-		}
-		
 		private static void saveFile(string fileName, string data) {
 			File.WriteAllText(fileName, data);
 		}
 		
-		public static string extractArg(string[] args, string argName) {
-
-			int index = Array.IndexOf(args, argName);
-			
-			if (index == -1 || (index + 1 == args.Length))
-				return null;
-			
-			return args[index + 1];
-		}
 	}
 }
