@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.IO;
 
@@ -6,6 +7,8 @@ namespace ngetv2
 {
     class Program
     {
+
+        private static Dictionary<string, IArgument> etapes = new Dictionary<string, IArgument>(){{"get", new get()},{"test", new test()}}; 
 
         public static void Main(string[] args)
         {
@@ -16,76 +19,10 @@ namespace ngetv2
             }
             else
             {
-                if (args[0] == "get" && args[1] == "-url")
-                {
-                    string url = args[2];
-                    WebClient client = new WebClient();
-                    try
-                    {
-                        string data = client.DownloadString(url);
-                        if (args.Length == 3)
-                        {
-                            //on affiche
-                            Console.WriteLine(data);
-                        }
-                        else if (args.Length > 3)
-                        {
-                            if (args[3] == "-save")
-                            {
-                                try
-                                {
-                                    //on sauvegarde
-                                    File.WriteAllText(args[4], data);
-                                    Console.WriteLine("Fichier sauvegarder!");
-                                }
-                                catch (UnauthorizedAccessException)
-                                {
-                                    Console.WriteLine("Vous ne posséder pas les droits pour sauvegarder un ficher {0}", args[4]);
-                                }
-                            }
-                        }
-                    }
-                    catch (WebException)
-                    {
-                        Console.WriteLine("L'adresse n'est pas correct");
-                    }
+                IArgument argumentManager = etapes[args[0]];
 
-                }
-                else if (args[0] == "test" && args[1] == "-url")
-                {
-                    string url = args[2];
-                    int nb = int.Parse(args[4]);
-                    bool avg = false;
-                    int somme = 0;
-                    //on vérifie si on veut la moyenne
-                    if (args.Length > 5 && args[5] == "-avg")
-                    {
-                        avg = true;
-                    }
-                    for (int i = 0; i < nb; i++)
-                    {
-                        int time = loadTime(url);
-                        if (!avg)
-                        {
-                            //on affiche chaque temps de chargement si on ne veut pas la moyenne
-                            Console.WriteLine("{0} : {1}s", i + 1, time);
-                        }
-                        else
-                        {
-                            //on fait la somme
-                            somme += time;
-                        }
-                    }
-                    if (avg)
-                    {
-                        //on affiche la moyenne
-                        Console.WriteLine("La moyenne de ces {0} chargement est de: {1}s", nb, somme / nb);
-                    }
 
-                }
             }
-
-
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }
