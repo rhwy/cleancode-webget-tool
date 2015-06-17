@@ -25,19 +25,24 @@ namespace nget_v2
 				
 				if(args[0].Equals("get")){
 					
-					if(args.Contains("-url") && args.Contains("-save")){ System.IO.File.WriteAllText(args[4],getContenuUrl(args[2])); return;}
-					if(args.Contains("-url")){ Console.WriteLine(getContenuUrl(args[2])); return;}
+					if(args.Contains("-url") && args.Contains("-save")){ System.IO.File.WriteAllText(getValeurParametre(args,"-save"),getContenuUrl(getValeurParametre(args,"-url"))); return;}
+					if(args.Contains("-url")){ Console.WriteLine(getContenuUrl(getValeurParametre(args,"-url"))); return;}
+					;
 				}
 				
 				if(args[0].Equals("test")){
-					if(args.Contains("-url") && args.Contains("-times") && args.Contains("-avg")){ getChargementUrl(args[2], int.Parse(args[4]), true); return;}
-					if(args.Contains("-url") && args.Contains("-times")){ getChargementUrl(args[2], int.Parse(args[4]), false); return;}
+					if(args.Contains("-url") && args.Contains("-times") && args.Contains("-avg")){ getChargementUrl(getValeurParametre(args,"-url"), int.Parse(getValeurParametre(args,"-times")), true); return;}
+					if(args.Contains("-url") && args.Contains("-times")){ getChargementUrl(getValeurParametre(args,"-url"), int.Parse(getValeurParametre(args,"-times")), false); return;}
 				}
 						
 			}catch(Exception e){
 				Console.WriteLine("Une erreur est survenue : " + e);
 			}
 			
+		}
+		
+		public static string getValeurParametre(string[] args, string parametre){
+			return args[Array.IndexOf(args,parametre)+1];
 		}
 		
 		public static String getContenuUrl(String url){
