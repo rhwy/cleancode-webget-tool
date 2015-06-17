@@ -12,85 +12,38 @@ namespace nget_v2
 {
     class Program
     {
+        static bool bonArg; //= false;
         static void Main(string[] args)
         {
-            bool bonArg = false;
+            bonArg = false;
+          
             try
             {
                 if (args.Length == 3)
                 {
                     if (args[0] == "get" && args.Length == 3)
                     {
-
-                        using (var client = new WebClient())
-                        {
-                            string result = client.DownloadString(args[2]);
-                            Console.WriteLine(result);
-                            bonArg = true;
-
-                        }
+                       //Content
                     }
                 }
                 else if (args.Length == 5)
                 {
                     if (args[0] == "get" && args[3] == "-save")
                     {
-                        using (var client = new WebClient())
-                        {
-                            string result = client.DownloadString(args[2]);
-                            File.WriteAllText(args[4], result);
-                            bonArg = true;
-
-                        }
+                        //getandsave
                     }
 
 
                     if (args[0] == "get" && args[3] == "-times")
                     {
 
-
-                        for (int i = 0; i < Convert.ToInt32(args[4]); i++)
-                        {
-                            Stopwatch stopWatch = new Stopwatch();
-                            stopWatch.Start();
-                            using (var client = new WebClient())
-                            {
-                                string result = client.DownloadString(args[2]);
-                            }
-
-                            stopWatch.Stop();
-                            TimeSpan ts = stopWatch.Elapsed;
-
-                            Console.WriteLine("Chargement numero " + (i + 1) + " : " + ts.Milliseconds + "ms");
-                            bonArg = true;
-                        }
+                        //gettimeload
+                       
                     }
                 }
                 else if (args.Length == 6)
                 {
-                    Stopwatch stopWatch = new Stopwatch();
-                    ArrayList tps = new ArrayList();
-
-                    for (int i = 0; i < Convert.ToInt32(args[4]); i++)
-                    {
-                        stopWatch.Start();
-                        using (var client = new WebClient())
-                        {
-                            string result = client.DownloadString(args[2]);
-                        }
-
-                        stopWatch.Stop();
-                        TimeSpan ts = stopWatch.Elapsed;
-                        tps.Add(Convert.ToInt32(ts.Milliseconds));
-                    }
-                    double dbResult = 0.0;
-                    for (int i = 0; i < tps.Count; i++)
-                    {
-                        dbResult += Convert.ToDouble(tps[i]);
-                    }
-                    dbResult = dbResult / Convert.ToInt32(args[4]);
-                    Console.WriteLine("time : " + dbResult + "ms");
-                    bonArg = true;
+                    //gettimeavgload
                 }
                 if (bonArg == false)
                 {
@@ -109,24 +62,72 @@ namespace nget_v2
 
 
         }
-        private static void GetTimeAvgLoad()
+        private static void GetTimeAvgLoad(string[] _args)
         {
-            throw new NotImplementedException();
+            Stopwatch stopWatch = new Stopwatch();
+            ArrayList tps = new ArrayList();
+
+            for (int i = 0; i < Convert.ToInt32(_args[4]); i++)
+            {
+                stopWatch.Start();
+                using (var client = new WebClient())
+                {
+                    string result = client.DownloadString(_args[2]);
+                }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                tps.Add(Convert.ToInt32(ts.Milliseconds));
+            }
+            double dbResult = 0.0;
+            for (int i = 0; i < tps.Count; i++)
+            {
+                dbResult += Convert.ToDouble(tps[i]);
+            }
+            dbResult = dbResult / Convert.ToInt32(_args[4]);
+            Console.WriteLine("time : " + dbResult + "ms");
+            bonArg = true;
         }
 
-        private static void GetTimeLoad()
+        private static void GetTimeLoad(string []_args)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < Convert.ToInt32(_args[4]); i++)
+            {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+                using (var client = new WebClient())
+                {
+                    string result = client.DownloadString(_args[2]);
+                }
+
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+
+                Console.WriteLine("Chargement numero " + (i + 1) + " : " + ts.Milliseconds + "ms");
+                bonArg = true;
+            }
         }
 
-        private static void GetAndSaveContent()
+        private static void GetAndSaveContent(string[] _args)
         {
-            throw new NotImplementedException();
+            using (var client = new WebClient())
+            {
+                string result = client.DownloadString(_args[2]);
+                File.WriteAllText(_args[4], result);
+                bonArg = true;
+
+            }
         }
 
-        private static void GetContent()
+        private static void GetContent(string[] _args)
         {
-            throw new NotImplementedException();
+            using (var client = new WebClient())
+            {
+                string result = client.DownloadString(_args[2]);
+                Console.WriteLine(result);
+                bonArg = true;
+
+            }
         }
 
     }
