@@ -23,27 +23,29 @@ namespace nget_v2
                 {
                     if (args[0] == "get" && args.Length == 3)
                     {
-                       //Content
+                        GetContent(args);
                     }
                 }
                 else if (args.Length == 5)
                 {
                     if (args[0] == "get" && args[3] == "-save")
                     {
+                        GetAndSaveContent(args);
                         //getandsave
                     }
 
 
                     if (args[0] == "get" && args[3] == "-times")
                     {
-
+                        GetTimeLoad(args);
                         //gettimeload
                        
                     }
                 }
                 else if (args.Length == 6)
                 {
-                    //gettimeavgload
+                    GetTimeAvgLoad(args);
+                    //gettimeavgload    
                 }
                 if (bonArg == false)
                 {
