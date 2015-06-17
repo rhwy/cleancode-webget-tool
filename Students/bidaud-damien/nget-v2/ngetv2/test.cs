@@ -23,7 +23,7 @@ namespace ngetv2
             bool avg = false;
             int somme = 0;
             //on vérifie si on veut la moyenne
-            if (Argument.Length > 4 && Argument[4] == "-avg")
+            if (Argument.Length > 3 && Argument[4] == "-avg")
             {
                 avg = true;
             }
