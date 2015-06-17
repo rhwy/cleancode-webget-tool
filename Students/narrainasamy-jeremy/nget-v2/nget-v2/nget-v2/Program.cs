@@ -23,11 +23,9 @@ namespace nget_v2
 	
 			try{
 				
-				if(args[0].Equals("get")){
-					
+				if(args[0].Equals("get")){		
 					if(args.Contains("-url") && args.Contains("-save")){ System.IO.File.WriteAllText(getValeurParametre(args,"-save"),getContenuUrl(getValeurParametre(args,"-url"))); return;}
 					if(args.Contains("-url")){ Console.WriteLine(getContenuUrl(getValeurParametre(args,"-url"))); return;}
-					;
 				}
 				
 				if(args[0].Equals("test")){
