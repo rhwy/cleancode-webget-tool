@@ -107,6 +107,27 @@ namespace nget_v2
 
             Console.ReadLine();
 
+
         }
+        private static void GetTimeAvgLoad()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void GetTimeLoad()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void GetAndSaveContent()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void GetContent()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
