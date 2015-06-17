@@ -23,7 +23,7 @@ namespace ngetv2
             bool avg = false;
             int somme = 0;
             //on vérifie si on veut la moyenne
-            if (Argument.Length > 3 && Argument[4] == "-avg")
+            if (Argument.Length > 4 && Argument[4] == "-avg")
             {
                 avg = true;
             }
@@ -33,7 +33,7 @@ namespace ngetv2
                 if (!avg)
                 {
                     //on affiche chaque temps de chargement si on ne veut pas la moyenne
-                    Console.WriteLine("{0} : {1}s", i + 1, time);
+                    Console.WriteLine("{0} : {1}ms", i + 1, time);
                 }
                 else
                 {
@@ -44,24 +44,29 @@ namespace ngetv2
             if (avg)
             {
                 //on affiche la moyenne
-                Console.WriteLine("La moyenne de ces {0} chargement est de: {1}s", nb, somme / nb);
+                Console.WriteLine("La moyenne de ces {0} chargement est de: {1}ms", nb, somme / nb);
             }
         }
 
         public int loadTime(string url)
         {
-            try
-            {
-                WebClient client = new WebClient();
-                Int32 start = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                client.DownloadString(url);
-                Int32 end = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                return end - start;
-            }
-            catch (WebException)
-            {
-                return 0;
-            }
-        }
+           WebClient client = new WebClient();
+           DateTime first, second;
+           try
+           {
+               first = DateTime.Now;
+               string downloadString = client.DownloadString(url);
+               second = DateTime.Now;
+
+               return second.Subtract(first).Milliseconds;
+
+           }
+           catch (WebException e)
+           {
+               Console.WriteLine(e);
+               return 0;
+           }
+       
+       }
     }
 }
