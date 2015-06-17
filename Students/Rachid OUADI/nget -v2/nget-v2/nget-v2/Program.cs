@@ -15,10 +15,32 @@ namespace nget_v2
         static bool bonArg; //= false;
         static void Main(string[] args)
         {
-            bonArg = false;
-          
+            bonArg = false; 
+            
             try
             {
+
+           
+
+                string[] typeOfExecution = { "get", "test" };
+            bool result = IsPresentTOE(args[0], typeOfExecution);
+                if(result==false)
+                {
+                    Console.WriteLine("Bad Argument");
+                    System.Environment.Exit(1);
+                }
+
+            string[] typeOfArgsForTheExecution = { "-url" };
+            result = IsPresentTOE(args[1], typeOfArgsForTheExecution);
+                if(result==false)
+                {
+                    Console.WriteLine("Bad Argument");
+                    System.Environment.Exit(1);
+                }
+
+            string[] additionalArgsToExecution = { "-times", "-avg" };
+
+            
                 if (args.Length == 3)
                 {
                     if (args[0] == "get" && args.Length == 3)
@@ -57,6 +79,17 @@ namespace nget_v2
             Console.ReadLine();
 
         }
+
+        private static bool IsPresentTOE(string arg,string[] tabArg)
+        {
+            if (tabArg.Contains(arg) == true)
+            {
+                return true;
+            }
+            return false;
+
+        }
+
         private static void GetTimeAvgLoad(string[] _args)
         {
             Stopwatch stopWatch = new Stopwatch();
