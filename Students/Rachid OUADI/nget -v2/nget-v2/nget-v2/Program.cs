@@ -31,21 +31,15 @@ namespace nget_v2
                     if (args[0] == "get" && args[3] == "-save")
                     {
                         GetAndSaveContent(args);
-                        //getandsave
                     }
-
-
                     if (args[0] == "get" && args[3] == "-times")
                     {
-                        GetTimeLoad(args);
-                        //gettimeload
-                       
+                        GetTimeLoad(args);  
                     }
                 }
                 else if (args.Length == 6)
                 {
                     GetTimeAvgLoad(args);
-                    //gettimeavgload    
                 }
                 if (bonArg == false)
                 {
@@ -61,7 +55,6 @@ namespace nget_v2
             }
 
             Console.ReadLine();
-
 
         }
         private static void GetTimeAvgLoad(string[] _args)
