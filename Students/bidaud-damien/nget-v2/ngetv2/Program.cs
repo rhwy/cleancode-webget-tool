@@ -21,26 +21,18 @@ namespace ngetv2
             {
                 IArgument argumentManager = etapes[args[0]];
 
+                string[] argument = new string[args.Length-1];
+                for (int i = 1; i < args.Length; i++)
+                {
+                    argument[i - 1] = args[i];
+                }
+                argumentManager.Argument = argument;
 
             }
             Console.Write("Press any key to continue . . . ");
             Console.ReadKey(true);
         }
 
-        public static int loadTime(string url)
-        {
-            try
-            {
-                WebClient client = new WebClient();
-                Int32 start = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                client.DownloadString(url);
-                Int32 end = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-                return end - start;
-            }
-            catch (WebException)
-            {
-                return 0;
-            }
-        }
+        
     }
 }
