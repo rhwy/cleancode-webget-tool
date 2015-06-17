@@ -1,73 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using NDesk.Options;
 using System.IO;
+using System.Net;
+using NDesk.Options;
 
-namespace nget
+namespace nget.Argument_Handler.Get
 {
-    class GetCommandArgumentHandler : IArgumentHandler
+    class GetCommandArgumentHandler : AArgumentHandler
     {
-        private string _url= null;
-        private string _file = null;
-        private List<string> _extra = new List<string>();
+        private string _url;
+        private string _file;
 
-        
-        public void ParseArguments(IEnumerable<string> args)
+        public override OptionSet getOptions()
         {
-            var optionSet = new OptionSet(){
-                {"-url=|url", "Affiche le contenu de l'URL.", 
+            return new OptionSet(){
+                {"-url=|url", "Displays the URL content", 
                 v => _url = v},
-                {"-save=|save", "Sauvegarde le contenu dans un fichier spécifique",
+                {"-save=|save", "Save the content in the specified file",
                 v => _file = v}
             };
-
-            try
-            {
-                _extra = optionSet.Parse(args);
-            }
-            catch (OptionException e)
-            {
-                Console.Write("Argument error: ");
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Try `greet --help' for more information.");
-                return;
-            }
-            
         }
-
-        public void ExecuteCommand()
+        
+        public override void ExecuteCommand()
         {
-            if (_url != null)
+            using (var client = new WebClient())
             {
-                using (WebClient client = new WebClient())
+                try
                 {
                     string content = client.DownloadString(_url);
                     if (_file != null)
-                    {
-                        try
-                        {
-                            File.WriteAllText(_file, content);
-                        }
-                        catch (IOException e)
-                        {
-                            Console.WriteLine(e.Message);
-                            return;
-                        }
-                    }
+                        File.WriteAllText(_file, content);
                     else
-                    {
                         Console.WriteLine(content);
-                    }
                 }
-
-                
-
+                catch (IOException e)
+                {
+                    Console.Write("File error : ");
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("An error occured while trying to download from {0}", _url);
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
             }
         }
 
+        public override void CheckArguments()
+        {
+            if (_url == null) throw new OptionException("No URL specified", "url");
+        }
     }
 }

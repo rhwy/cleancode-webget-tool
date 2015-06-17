@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Argument Handler\Get\GetCommandArgumentHandler.cs" />
+    <Compile Include="Argument Handler\Help\HelpCommandArgumentHandler.cs" />
     <Compile Include="Argument Handler\IArgumentHandler.cs" />
     <Compile Include="Argument Handler\Test\TestCommandArgumentHandler.cs" />
     <Compile Include="Program.cs" />

@@ -3,51 +3,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using NDesk.Options;
 
 namespace nget.Argument_Handler.Test
 {
-    class TestCommandArgumentHandler : IArgumentHandler
+    class TestCommandArgumentHandler : AArgumentHandler
     {
-        private string _url = null;
+        private string _url;
         private int _repeat = 1;
-        private bool _displayAverage = false;
-        private List<string> _extra = new List<string>();  
+        private bool _displayAverage;
 
-
-        public void ParseArguments(IEnumerable<string> args)
+        public override void ExecuteCommand()
         {
-            var optionSet = new OptionSet(){
-                {"-url=|url", "Affiche le contenu de l'URL.", 
-                v => _url = v},
-                {"-times=|times", "Nombre de répétitions du chargement de la page",
-                (int v) => _repeat = v},
-                {"-avg|avg", "Affiche la moyenne du temps de chargement", v => _displayAverage = v != null}
-            };
+            Stopwatch stopwatch = new Stopwatch();
+            List<int> times = new List<int>();
 
             try
             {
-                _extra = optionSet.Parse(args);
-
-            }
-            catch (OptionException e)
-            {
-                Console.Write("Argument error: ");
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Try `greet --help' for more information.");
-                return;
-            }
-        }
-
-        public void ExecuteCommand()
-        {
-            if (_url != null)
-            {
-                Stopwatch stopwatch = new Stopwatch();
-                List<int> times = new List<int>();
-
                 using (WebClient client = new WebClient())
                 {
                     for (int i = 0; i < _repeat; i++)
@@ -55,23 +27,46 @@ namespace nget.Argument_Handler.Test
                         stopwatch.Start();
                         client.DownloadString(_url);
                         stopwatch.Stop();
-                        times.Add(int.Parse(stopwatch.Elapsed.Milliseconds.ToString()));
+                        times.Add(stopwatch.Elapsed.Milliseconds);
                         stopwatch.Reset();
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occured while trying to download from {0}", _url);
+                Console.WriteLine(e.Message);
+                throw;
+            }
 
-                if (_displayAverage)
-                    Console.WriteLine("Temps moyen des {0} requêtes : {1} millisecondes", _repeat, times.Average());
-                else
+            if (_displayAverage)
+                Console.WriteLine("Average time of {0} requests : {1} milliseconds", _repeat, times.Average());
+            else
+            {
+                int i = 1;
+                foreach (var time in times)
                 {
-                    int i = 1;
-                    foreach (var time in times)
-                    {
-                        Console.WriteLine("Temps de la requête numéro {0} : {1} millisecondes", i, time);
-                        i++;
-                    }
+                    Console.WriteLine("Elapsed time for request number {0} : {1} milliseconds", i, time);
+                    i++;
                 }
             }
+
+        }
+
+        public override void CheckArguments()
+        {
+            if (_url == null) throw new OptionException("No URL specified", "url");
+        }
+
+        public override OptionSet getOptions()
+        {
+            return new OptionSet(){
+                {"-url=|url", "Displays the URL content", 
+                v => _url = v},
+                {"-times=|times", "Number of attempts to load the specified page",
+                (int v) => _repeat = v},
+                {"-avg|avg", "Displays the average donwloading time", v => _displayAverage = v != null}
+            };
         }
     }
 }
