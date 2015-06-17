@@ -22,6 +22,7 @@ namespace nget
 		public static void Main(string[] args)
 		{
             listeArgument = new List<string>(args);
+
             switch (listeDeCommande.IndexOf(args[0]) )
             {
                 case 0 :
@@ -36,7 +37,6 @@ namespace nget
 			Console.ReadKey(true);
 		}
 		
-		    //Fonction d'affichage de l'URL
 		    private static void print(String URL, String path ="")
 		    {
                 Console.WriteLine(path);
@@ -48,38 +48,35 @@ namespace nget
                         wc.DownloadFile(URL, path);
                }catch(System.Net.WebException e){
            	    Console.WriteLine(e.Message);
-               }
-			
+               }			
 		    }
 		
-		    //fonciton de chargement de l'URL
 		    private static void NoPrint(string URL)
 		    {
 			    var wc = new System.Net.WebClient();
 			    wc.DownloadString(URL);
 		    }
 		
-		    //Fonction de routage des tests de chargement
-		    private static void test(string URL,int compteur, int mode)
+		    private static void testSwitch(string URL,int compteur, int mode)
 		    {
 			    long[] tab = new long[compteur];
 			    long moyenne = 0;
-			    Stopwatch sw = new Stopwatch(); // variable timer
+			    Stopwatch sw = new Stopwatch();
 			
 			    for(int i = 0 ; i < compteur ; i++)
 			    {
 				    sw.Start();
-				    if(mode == 0) // mode avec affichage
+				    if(mode == 0)
 					    print(URL);
 				    else
-					    NoPrint(URL); // mode sans affichage
+					    NoPrint(URL);
 				
 				    sw.Stop();
 				    tab[i]=sw.ElapsedMilliseconds;
 				    moyenne += tab[i];				
-				    sw = Stopwatch.StartNew(); // reset du timer
+				    sw = Stopwatch.StartNew();
 			    }
-				
+
 			    Console.Clear();
 			    if(mode == 0)
 				    for(int i = 0 ; i < compteur ; i++)
@@ -104,7 +101,7 @@ namespace nget
 
             private static void testMethode(string [] args)
             {
-                int compteur,mode = 1;
+                int compteur,mode = 0;
 
                 if (listeArgument.IndexOf("-avg") > 0)
                     mode = 1;
@@ -112,13 +109,12 @@ namespace nget
                 try
                 {
                     compteur = Convert.ToInt32(args[listeArgument.IndexOf("-times") + 1]);
-                    test(args[listeArgument.IndexOf("-url") + 1], compteur, mode);
+                    testSwitch(args[listeArgument.IndexOf("-url") + 1], compteur, mode);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
-            }
-        
+            }        
 	}
 }
