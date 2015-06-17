@@ -13,7 +13,7 @@ namespace ngetv2
 
             if (args.Length == 0)
             {
-                Console.WriteLine("Aucun argument mis en parametre");
+                Console.WriteLine("Aucun argument mit en parametre");
             }
             else
             {

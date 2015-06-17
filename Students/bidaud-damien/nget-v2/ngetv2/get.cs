@@ -44,7 +44,7 @@ namespace ngetv2
 
         public void SaveData(string data)
         {
-            if (Array.Find(Argument, findSave) != null)
+            if (Array.Find(Argument, findElement) != null)
             {
                 try
                 {
@@ -58,7 +58,7 @@ namespace ngetv2
             }
         }
 
-        public bool findSave(string element)
+        public bool findElement(string element)
         {
             return element == "-save";
         }

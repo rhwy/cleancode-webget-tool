@@ -18,7 +18,7 @@ namespace ngetv2
                 int nb = int.Parse(Argument[3]);
                 bool avg = false;
                 int somme = 0;
-                if (Array.Find(Argument, findAvg) != null)
+                if (Array.Find(Argument, findElement) != null)
                 {
                     avg = true;
                 }
@@ -41,7 +41,7 @@ namespace ngetv2
             }
         }
 
-        private bool findAvg(String element)
+        public bool findElement(String element)
         {
             return element == "-avg";
         }

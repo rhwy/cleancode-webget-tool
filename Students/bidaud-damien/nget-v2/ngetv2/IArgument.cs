@@ -6,6 +6,6 @@
         string[] Argument { get; set; }
         WebConnection Connection { get; set; }
         void execute();
-        
+        bool findElement(string element);
     }
 }
