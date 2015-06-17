@@ -10,40 +10,34 @@ namespace nget
 {
     class Program
     {
+       private static Dictionary<string, ACommand> commandDictionary;
+
         static void Main(string[] args)
+        {
+            init(args);
+
+            ACommand command;
+            if (commandDictionary.TryGetValue(args[0], out command))
+            {
+                if (command.verifyArguments())
+                    command.executeCommand();
+                else
+                    Console.WriteLine("[Error] Missing arguments.");
+            }
+            else 
+                Console.WriteLine("[Error] Invalid command type.");
+
+            Console.WriteLine("\n...");
+            Console.ReadLine();
+        }
+
+        private static void init(string[] args)
         {
             Options options = new Options(args);
 
-            if (options.Url == null)
-            {
-                Console.WriteLine("[Error] Url needs to be defined.");
-                return;
-            }
-
-            // Get commands
-            if (options.CommandType == "get")
-            {
-                String webContent = NgetTools.getInstance.getWebContent(options.Url);
-
-                if (options.DestinationFilename != null)
-                {
-                    bool isSaved = NgetTools.getInstance.save(webContent, options.DestinationFilename);
-                    Console.WriteLine(isSaved ? "Content saved" : "Error during save");
-                }
-                else
-                    Console.WriteLine(webContent);
-            }
-
-            // Test commands
-            else if (options.CommandType == "test" && options.NbLoops > 0)
-            {
-                if (!options.IsAverage)
-                    TestTools.getInstance.test_time_access(options);
-                else
-                    TestTools.getInstance.test_time_access_average(options);
-            }
-            Console.Write("\nType something to exit...");
-            Console.ReadLine();
+            commandDictionary = new Dictionary<string, ACommand>{
+            {"get", new CommandGet(options)},
+            {"test", new CommandTest(options)}};
         }
     }     
 }

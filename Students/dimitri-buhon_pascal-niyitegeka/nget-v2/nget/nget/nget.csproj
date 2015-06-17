@@ -41,10 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACommand.cs" />
+    <Compile Include="CommandGet.cs" />
+    <Compile Include="CommandTest.cs" />
     <Compile Include="NgetTools.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

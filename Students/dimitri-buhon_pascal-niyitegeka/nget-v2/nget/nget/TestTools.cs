@@ -9,33 +9,18 @@ namespace nget
 {
     class TestTools
     {
-        private static TestTools instance;
-        Stopwatch stopwatch;
-        TimeSpan ts;
+        static Stopwatch stopwatch;
+        static TimeSpan ts;
 
-        private TestTools() { }
-
-        public static TestTools getInstance
+        public static void test_time_access(Options options)
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new TestTools();
-                }
-                return instance;
-            }
-        }
-
-        public void test_time_access(Options options)
-        {
-            for (int i = 0; i < options.NbLoops; i++)
+            for (int i = 0; i < options.nbLoops; i++)
             {
                 Console.Write("Loop " + (i + 1) + " :");
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                NgetTools.getInstance.getWebContent(options.Url);
+                NgetTools.getWebContent(options.url);
 
                 stopwatch.Stop();
                 ts = stopwatch.Elapsed;
@@ -43,21 +28,21 @@ namespace nget
             }
         }
 
-        public void test_time_access_average(Options options)
+        public static void test_time_access_average(Options options)
         {
             double sum = 0;
-            for (int i = 0; i < options.NbLoops; i++)
+            for (int i = 0; i < options.nbLoops; i++)
             {
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
 
-                NgetTools.getInstance.getWebContent(options.Url);
+                NgetTools.getWebContent(options.url);
 
                 stopwatch.Stop();
                 ts = stopwatch.Elapsed;
                 sum += ts.Milliseconds;
             }
-            Console.WriteLine("Average time for " + options.NbLoops + " loop(s) : " + (sum / options.NbLoops) + "ms");
+            Console.WriteLine("Average time for " + options.nbLoops + " loop(s) : " + (sum / options.nbLoops) + "ms");
         }
     }
 }

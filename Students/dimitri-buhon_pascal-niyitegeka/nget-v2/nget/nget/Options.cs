@@ -8,17 +8,20 @@ namespace nget
 {
     public class Options
     {
-        private String commandType;
-        private String destinationFilename;
-        private String url;
-        private int nbLoops = 0;
-        private bool isAverage = false;
+        public String destinationFilename { get; private set; }
+        public String url { get; private set; }
+        public bool isAverage { get; private set; }
+        public int nbLoops { get; private set; }
         
         public Options(string[] args)
         {
-            if (args.Length < 2) return;
+            isAverage = false;
+            nbLoops = 0;
 
-            commandType = args[0];  
+            if (args.Length < 3)
+                return;
+
+            int tmpNbLoops = nbLoops;
             for(int i = 1; i < args.Length; i++) {
                 switch (args[i])
                 {
@@ -31,44 +34,17 @@ namespace nget
                     case "-times" :
                         String str_nbLoops = (args.Length > i+1) ? args[i + 1] : null;
                         if (str_nbLoops != null)
-                            int.TryParse(str_nbLoops, out nbLoops);
+                        {
+                            int.TryParse(str_nbLoops, out tmpNbLoops);
+                            nbLoops = tmpNbLoops;
+                        }
                         break;
                     case "-avg":
                         isAverage = true;
                         break;
                 }
             }
-        }
-
-        // Getters and Setters
-        public String CommandType
-        {
-            get { return commandType; }
-            set { commandType = value; }
-        }
-
-        public String DestinationFilename
-        {
-            get { return destinationFilename; }
-            set { destinationFilename = value; }
-        }
-
-        public String Url
-        {
-            get { return url; }
-            set { url = value; }
-        }
-
-        public int NbLoops
-        {
-            get { return nbLoops; }
-            set { nbLoops = value; }
-        }
-
-        public bool IsAverage
-        {
-            get { return isAverage; }
-            set { isAverage = value; }
+            nbLoops = tmpNbLoops;
         }
     }
 }

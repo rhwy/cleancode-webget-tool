@@ -9,22 +9,7 @@ namespace nget
 {
     public class NgetTools
     {
-        private static NgetTools instance;
-
-        private NgetTools() { }
-
-        public static NgetTools getInstance {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new NgetTools();
-                }
-                return instance;
-            }
-        }
-
-        public String getWebContent(string url)
+        public static String getWebContent(string url)
         {
             WebRequest webRequest;
             WebResponse webResponse;   
@@ -46,7 +31,7 @@ namespace nget
             return result;
         }
 
-        public bool save(String content, String filename)
+        public static bool save(String content, String filename)
         {
             try
             {
