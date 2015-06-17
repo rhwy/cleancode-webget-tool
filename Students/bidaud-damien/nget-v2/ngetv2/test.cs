@@ -11,30 +11,33 @@ namespace ngetv2
 
         public void execute()
         {
-            string url = Argument[1];
-            int nb = int.Parse(Argument[3]);
-            bool avg = false;
-            int somme = 0;
-
-            if (Array.Find(Argument, findAvg) != null)
+            
+            if (Argument.Length > 2)
             {
-                avg = true;
-            }
-            for (int i = 0; i < nb; i++)
-            {
-                int time = Connection.loadTime(url);
-                if (!avg)
+                string url = Argument[1];
+                int nb = int.Parse(Argument[3]);
+                bool avg = false;
+                int somme = 0;
+                if (Array.Find(Argument, findAvg) != null)
                 {
-                    Console.WriteLine("{0} : {1}ms", i + 1, time);
+                    avg = true;
                 }
-                else
+                for (int i = 0; i < nb; i++)
                 {
-                    somme += time;
+                    int time = Connection.loadTime(url);
+                    if (!avg)
+                    {
+                        Console.WriteLine("{0} : {1}ms", i + 1, time);
+                    }
+                    else
+                    {
+                        somme += time;
+                    }
                 }
-            }
-            if (avg)
-            {
-                Console.WriteLine("La moyenne de ces {0} chargement est de: {1}ms", nb, somme/nb);
+                if (avg)
+                {
+                    Console.WriteLine("La moyenne de ces {0} chargement est de: {1}ms", nb, somme/nb);
+                }
             }
         }
 

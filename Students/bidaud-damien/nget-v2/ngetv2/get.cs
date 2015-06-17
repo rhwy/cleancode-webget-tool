@@ -17,23 +17,27 @@ namespace ngetv2
 
         public void execute()
         {
-            string url = Argument[1];
-            
-            try
+
+            if (Argument.Length > 2)
             {
-                string data = Connection.GetData(url);
-                if (Argument.Length == 2)
+                string url = Argument[1];
+
+                try
                 {
-                    Console.WriteLine(data);
+                    string data = Connection.GetData(url);
+                    if (Argument.Length == 2)
+                    {
+                        Console.WriteLine(data);
+                    }
+                    else if (Argument.Length > 2)
+                    {
+                        SaveData(data);
+                    }
                 }
-                else if (Argument.Length > 2)
+                catch (WebException)
                 {
-                    SaveData(data);   
+                    Console.WriteLine("L'adresse n'est pas correct");
                 }
-            }
-            catch (WebException)
-            {
-                Console.WriteLine("L'adresse n'est pas correct");
             }
         }
 
