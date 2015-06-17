@@ -10,16 +10,19 @@ namespace nget
         static void Main(string[] args)
         {
             IParseCommand command;
-            Console.WriteLine(args[0]);
             switch (args[0])
             {
                 case "get":
-                    command = new GetCommand();
-                    command.execute(args);
+                    {
+                        command = new GetCommand();
+                        command.execute(args);
+                    }
                     break;
                 case "test":
-                    command = new TestCommand();
-                    command.execute(args);
+                    {
+                        command = new TestCommand();
+                        command.execute(args);
+                    }
                     break;
             }
         }
