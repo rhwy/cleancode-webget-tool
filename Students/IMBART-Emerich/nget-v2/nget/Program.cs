@@ -31,28 +31,7 @@ namespace nget
                 case 1:
                     testMethode(args);
                 break;
-            }
-           /*
-			else if(args.Length == 5 && args[0] == "test" && args[1] == "-url" && args[3] == "-times")
-			{
-				int compteur; 
-				try{
-					compteur = Convert.ToInt32(args[4]);
-					test(args[2],compteur,0);
-				}catch(Exception e){
-					Console.WriteLine(e.Message);
-				}
-			}
-			else if(args.Length == 6 && args[0] == "test" && args[1] == "-url" && args[3] == "-times" && args[5]=="-avg") 
-			{
-				int compteur; 
-				try{
-					compteur = Convert.ToInt32(args[4]);
-					test(args[2],compteur,1);
-				}catch(Exception e){
-					Console.WriteLine(e.Message);
-				}
-			}*/
+            }          
 			
 			Console.ReadKey(true);
 		}
@@ -108,11 +87,6 @@ namespace nget
 			    else
 				    Console.WriteLine("Temps moyen de chargement " + moyenne/compteur +" ms");
 		    }
-
-            private static void printMessage(string message)
-            {
-                
-            }
 
             private static void getMethode(string [] args)
             {
