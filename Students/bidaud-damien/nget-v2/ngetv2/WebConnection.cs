@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ngetv2
 {
@@ -15,7 +11,7 @@ namespace ngetv2
             Client = new WebClient();
         }
 
-        public string getData(String url)
+        public string GetData(String url)
         {
             return Client.DownloadString(url);
         }
@@ -27,7 +23,7 @@ namespace ngetv2
             try
             {
                 first = DateTime.Now;
-                string downloadString = client.DownloadString(url);
+                client.DownloadString(url);
                 second = DateTime.Now;
 
                 return second.Subtract(first).Milliseconds;

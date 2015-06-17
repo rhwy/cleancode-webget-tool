@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ngetv2
 {
@@ -25,25 +21,14 @@ namespace ngetv2
             
             try
             {
-                string data = Connection.getData(url);
+                string data = Connection.GetData(url);
                 if (Argument.Length == 2)
                 {
                     Console.WriteLine(data);
                 }
                 else if (Argument.Length > 2)
                 {
-                    if (Array.Find(Argument, findSave)!=null)
-                    {
-                        try
-                        {
-                            File.WriteAllText(Argument[3], data);
-                            Console.WriteLine("Fichier sauvegarder!");
-                        }
-                        catch (UnauthorizedAccessException)
-                        {
-                            Console.WriteLine("Vous ne posséder pas les droits pour sauvegarder un ficher {0}", Argument[3]);
-                        }
-                    }
+                    SaveData(data);   
                 }
             }
             catch (WebException)
@@ -52,6 +37,22 @@ namespace ngetv2
             }
         }
 
+
+        public void SaveData(string data)
+        {
+            if (Array.Find(Argument, findSave) != null)
+            {
+                try
+                {
+                    File.WriteAllText(Argument[3], data);
+                    Console.WriteLine("Fichier sauvegarder!");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    Console.WriteLine("Vous ne posséder pas les droits pour sauvegarder un ficher {0}", Argument[3]);
+                }
+            }
+        }
 
         public bool findSave(string element)
         {
