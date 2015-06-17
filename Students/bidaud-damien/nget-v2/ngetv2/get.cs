@@ -18,7 +18,7 @@ namespace ngetv2
         public void execute()
         {
 
-            if (Argument.Length > 2)
+            if (Argument.Length > 1)
             {
                 string url = Argument[1];
 
