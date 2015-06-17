@@ -12,9 +12,6 @@ namespace nget
     {
         static void Main(string[] args)
         {
-
-            Stopwatch stopwatch;
-            TimeSpan ts;
             Options options = new Options(args);
 
             if (options.Url == null)
@@ -28,54 +25,22 @@ namespace nget
             {
                 String webContent = NgetTools.getInstance.getWebContent(options.Url);
 
-                // Get web content
-                if (options.DestinationFilename == null)
-                {
-                    Console.WriteLine(webContent);
-                }
-                // Save web content in a file
-                else
+                if (options.DestinationFilename != null)
                 {
                     bool isSaved = NgetTools.getInstance.save(webContent, options.DestinationFilename);
                     Console.WriteLine(isSaved ? "Content saved" : "Error during save");
                 }
+                else
+                    Console.WriteLine(webContent);
             }
+
             // Test commands
             else if (options.CommandType == "test" && options.NbLoops > 0)
             {
-                // Test time access to an url N time
                 if (!options.IsAverage)
-                {
-                    for (int i = 0; i < options.NbLoops; i++)
-                    {
-                        Console.Write("Loop " + (i + 1) + " :");
-                        stopwatch = new Stopwatch();
-                        stopwatch.Start();
-
-                        NgetTools.getInstance.getWebContent(options.Url);
-
-                        stopwatch.Stop();
-                        ts = stopwatch.Elapsed;
-                        Console.Write(ts.Milliseconds + "ms\n");
-                    }
-                }
-                // Test time access to an url N time and get average
+                    TestTools.getInstance.test_time_access(options);
                 else
-                {
-                    double sum = 0;
-                    for (int i = 0; i < options.NbLoops; i++)
-                    {
-                        stopwatch = new Stopwatch();
-                        stopwatch.Start();
-
-                        NgetTools.getInstance.getWebContent(options.Url);
-
-                        stopwatch.Stop();
-                        ts = stopwatch.Elapsed;
-                        sum += ts.Milliseconds;
-                    }
-                    Console.WriteLine("Average time for " + options.NbLoops + " loop(s) : " + (sum / options.NbLoops) + "ms");
-                }
+                    TestTools.getInstance.test_time_access_average(options);
             }
             Console.Write("\nType something to exit...");
             Console.ReadLine();
