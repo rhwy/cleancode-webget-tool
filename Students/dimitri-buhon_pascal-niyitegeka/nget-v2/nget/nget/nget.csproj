@@ -45,7 +45,7 @@
     <Compile Include="command\get\CommandGet.cs" />
     <Compile Include="command\test\CommandTest.cs" />
     <Compile Include="tools\NgetTools.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="parser\Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tools\TestTools.cs" />
