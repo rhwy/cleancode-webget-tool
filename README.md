@@ -4,3 +4,5 @@
 
 
 English readme not available at this time, it's only available in [french](readme.fr.md)
+
+Lucas Girardin <lucas.girardin@outlook.com>
